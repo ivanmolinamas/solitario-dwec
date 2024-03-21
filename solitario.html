@@ -8,9 +8,12 @@
 		<link rel="stylesheet" href="css/solitario.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		
         <!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 		Invocar a los ficheros de estilos y al JavaScript donde proceda
         -->     
+		<script src="/js/solitario.js"></script>
+
 	</head>
 
     <body>
@@ -30,7 +33,7 @@
 				de movimientos que se han hecho hasta el momento. Estos números se 
 				indicarán en los span internos -->
 			<h2 id="marcadores">
-				<span>Tiempo: 00:00 <span id="contador_tiempo"></span></span>
+				<span>Tiempo: <span id="contador_tiempo"></span></span>
 				<span style="display:inline-block; width:200px"></span>
 				<span>Movimientos: <span id="contador_movimientos" class=""></span></span>
 			</h2>
@@ -41,7 +44,7 @@
 				de elementos span -->
 			<div id="mesa">
 				<div class="tapetes_superiores">
-					<div id="inicial" class="tapete"><span id="contador_inicial" class="contador"></span></div><!--
+					<div id="inicial" class="tapete" id="tapete_inicial"><span id="contador_inicial" class="contador"></span></div><!--
 					--><div id="sobrantes" class="tapete"><span id="contador_sobrantes" class="contador"></span></div>
 				</div>
 				<div id="receptor1" class="tapete receptor"><span id="contador_receptor1" class="contador"></span></div><!--

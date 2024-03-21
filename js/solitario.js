@@ -1,5 +1,9 @@
 /***** INICIO DECLARACIÓN DE VARIABLES GLOBALES *****/
 
+console.log("Carga Solitario.js")
+window.addEventListener("load",inicio);
+
+
 // Array de palos:
 let palos = ["ova", "cua", "hex", "cir"];
 // Array de número de cartas:
@@ -28,7 +32,7 @@ let mazo_receptor4 = [];
 
 // Contadores de cartas
 let cont_inicial = document.getElementById("cont_inicial");
-let cont_sobrantes = document.getElementById("cont_sobrantes");
+let cont_sobrantes = document.getElementById("contador_sobrantes");
 let cont_receptor1 = document.getElementById("cont_receptor1");
 let cont_receptor2 = document.getElementById("cont_receptor2");
 let cont_receptor3 = document.getElementById("cont_receptor3");
@@ -42,14 +46,14 @@ let temporizador = null; // manejador del temporizador
 
 /***** FIN DECLARACIÓN DE VARIABLES GLOBALES *****/
 
-
+//BOTON RESET COMENTADO!!!!!!!!!!!
 // Rutina asociada a boton reset: comenzar_juego
-document.getElementById("reset").onclick = comenzar_juego;
+//document.getElementById("reset").onclick = comenzar_juego;
 
 // El juego arranca ya al cargar la página: no se espera a reiniciar
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
-window.onload = comenzar_juego();
+window.onload = comenzar_juego;
 
 
 
@@ -129,17 +133,23 @@ function comenzar_juego() {
 	el resultado de la llamada a setInterval en alguna variable para llamar oportunamente
 	a "clearInterval" en su caso.   
 */
-var tiempo = document.getElementById("iniciarTiempo").addEventListener("click",arrancar_tiempo)
+function inicio(){
+	console.log("linea de iniciar tiempo boton");
+document.getElementById("iniciarTiempo").addEventListener("click", arrancar_tiempo)
+}
+
 
 function arrancar_tiempo() {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
-	var contador = document.getElementById("contador_tiempo");
+	console.log("Ping arranca_tiempo");
+	var cont_tiempo = document.getElementById("contador_tiempo");
+
 	if (temporizador) clearInterval(temporizador);
-	let hms = function () {
-		let seg = Math.trunc(segundos % 60);
-		let min = Math.trunc((segundos % 3600) / 60);
-		let hor = Math.trunc((segundos % 86400) / 3600);
-		let tiempo = ((hor < 10) ? "0" + hor : "" + hor)
+	var hms = function () {
+		var seg = Math.trunc(segundos % 60);
+		var min = Math.trunc((segundos % 3600) / 60);
+		var hor = Math.trunc((segundos % 86400) / 3600);
+		var tiempo = ((hor < 10) ? "0" + hor : "" + hor)
 			+ ":" + ((min < 10) ? "0" + min : "" + min)
 			+ ":" + ((seg < 10) ? "0" + seg : "" + seg);
 		set_contador(cont_tiempo, tiempo);
@@ -148,8 +158,6 @@ function arrancar_tiempo() {
 	segundos = 0;
 	hms(); // Primera visualización 00:00:00
 	temporizador = setInterval(hms, 1000);
-
-	contador.innerHTML(temporizador);
 
 } // arrancar_tiempo
 
@@ -194,6 +202,13 @@ function barajar(mazo) {
 */
 function cargar_tapete_inicial(mazo) {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
+	// poner las cartas en el tapete
+	//añadir los elementos del mazo en un div del array
+
+	//tapete es el div con id tapete_inicial	
+	var tapete = document.getElementById("tapete_inicial");
+
+
 } // cargar_tapete_inicial
 
 
@@ -210,6 +225,7 @@ function inc_contador(contador) {
 */
 function dec_contador(contador) {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! ***/
+	contador.innerHTML = +contador.innerHTML + 1;
 } // dec_contador
 
 /**
@@ -217,6 +233,7 @@ function dec_contador(contador) {
 */
 function set_contador(contador, valor) {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
+	contador.innerHTML = valor;
 } // set_contador
 
 
@@ -225,4 +242,5 @@ function set_contador(contador, valor) {
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
 
-
+console.log("Mazo inicial:")
+console.log(mazo_inicial);

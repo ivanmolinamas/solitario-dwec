@@ -6,11 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test de baraja</title>
     <style>
+        /*
         .carta {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             max-width: 380px;
+        }*/
+        .posicion {
+            position: absolute;
+        }
+
+        #contenedor {
+            position: relative;
+            padding: 5px;
         }
     </style>
 </head>
@@ -80,10 +89,10 @@
                 //añadimos la carta al tapete
                 //console.log(carta)
                 div.appendChild(carta);
-                tapete.appendChild(div);
+                // tapete.appendChild(div);
             }
         }
-        
+
         //codigo de baraja
         for (let i = 0; i < palos.length; i++) {
             //Se generan los palos
@@ -109,20 +118,38 @@
                 // Generamos un índice aleatorio entre 0 y i
                 const j = Math.floor(Math.random() * (i + 1));
                 // Intercambiamos los elementos en las posiciones i y j
-                [baraja[i], baraja[j]] = [baraja[j], baraja[i]];
+                [array[i], array[j]] = [array[j], array[i]];
             }
             return array;
         }
 
         // Ejemplo de uso:
-        const miArray = [1, 2, 3, 4, 5];
-        const arrayMezclado = mezclarArray(miArray);
-        console.log(baraja);
+
+        //barajo la baraja usando la funcion y pasando la baraja
+        mezclarArray(baraja);
+        console.log(baraja); //ping
+        // Obtener el contenedor de las cartas
         const contenedor = document.getElementById("contenedor");
 
-        // Itera sobre cada carta en el array baraja
+        // Obtener la posición inicial para la primera carta
+        let posicionHorizontal = 0;
+        let posicionVertical = 0;
+
+        // Iterar sobre cada carta en el array baraja
         baraja.forEach(carta => {
-            // Agrega la carta al contenedor en el documento HTML
+            // Agregar la clase "principal" a cada carta
+            carta.classList.add("principal");
+
+            // Establecer la posición de la carta
+            carta.style.position = "absolute"
+            carta.style.left = `${posicionHorizontal}px`;
+            carta.style.top = `${posicionVertical}px`;
+
+            // Aumentar la posición para la siguiente carta
+            posicionHorizontal += 15; // Ajusta este valor según el desplazamiento horizontal deseado
+            posicionVertical += 10; // Ajusta este valor según el desplazamiento vertical deseado
+
+            // Agregar la carta al contenedor en el documento HTML
             contenedor.appendChild(carta);
         });
     </script>
