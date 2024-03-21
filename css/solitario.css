@@ -1,0 +1,71 @@
+/**
+	Especificaciones CSS para el juego del solitario 
+*/
+
+/* /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! 
+	Completar los estilos que faltan y modificar al gusto del alumno
+**/
+
+/* Todos los contadores estarán ubicados en la parte inferior 
+   derecha (position absolute) de los respectivos tapetes (position relative).
+*/
+.contador {
+	position: absolute;
+	bottom: 0px;
+	right: 3px;
+}
+
+
+/* Centrado del título y color */
+h1#titulo {
+	text-align: center;
+	color: #E65014;
+}
+.cabecera{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+/* Centrado de los marcadores de tiempo y movimientos */
+h2#marcadores{ 
+	text-align: center; 
+}
+
+/* Mesa que contiene a los tapetes centrados */
+div#mesa{
+	text-align: center;
+	margin:20px;
+}
+
+/* Todos los tapetes con position relative para que
+   los respectivos mazos (arrays de <img>) puedan
+   posicionarse de manera absoluta respecto a ellos */
+div.tapete{
+	display: inline-block;
+	position: relative;
+	margin: 10px;
+}
+
+/* Dimensiones y color de fondo para el tapete inicial */
+div.tapete#inicial{
+	width: 340px;
+	height: 340px;			
+	background-color: lightgrey;
+}
+
+/* Dimensiones para todos los tapetes salvo el inicial */
+div.tapete:not(#inicial){				
+	height: 125px;
+	width: 100px;
+}
+
+/* Color de fondo para el tapete de las cartas sobrantes */
+div.tapete#sobrantes{
+	background-color: lightblue;
+}
+
+/* Color de fondo de los tapetes receptores */
+div.tapete.receptor{
+	background-color: lightgreen;
+}
