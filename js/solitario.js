@@ -1,7 +1,8 @@
 /***** INICIO DECLARACIÓN DE VARIABLES GLOBALES *****/
 
 console.log("Carga Solitario.js")
-window.addEventListener("load",inicio);
+window.addEventListener("load", inicio);
+//window.addEventListener("load", comenzar_juego)
 
 
 // Array de palos:
@@ -53,8 +54,8 @@ let temporizador = null; // manejador del temporizador
 // El juego arranca ya al cargar la página: no se espera a reiniciar
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
-window.onload = comenzar_juego;
-
+//window.onload = comenzar_juego;
+window.addEventListener("load", comenzar_juego)
 
 
 // Desarrollo del comienzo del juego
@@ -77,14 +78,19 @@ function comenzar_juego() {
 			//declaro la variable numero para el numero de la carta
 			var numero = numeros[x];
 			//creo la carta
-			var carta = document.createElement("img");
+			var imgCarta = document.createElement("img");
 			//asingo atributo scr, alt y ancho a la carta 
-			carta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
-			carta.setAttribute("alt", "Carata de baraja");
-			carta.setAttribute("width", "70");
+			imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
+			imgCarta.setAttribute("alt", "Carta de baraja");
+			imgCarta.setAttribute("width", "100");
+			var carta = [
+				imgCarta,
+				numero,
+				palo
+			]
 			//metemos las carats en un array
 			mazo_inicial.push(carta);
-			console.log(mazo_inicial);
+			//console.log(mazo_inicial);
 		}
 	}
 
@@ -133,9 +139,9 @@ function comenzar_juego() {
 	el resultado de la llamada a setInterval en alguna variable para llamar oportunamente
 	a "clearInterval" en su caso.   
 */
-function inicio(){
+function inicio() {
 	console.log("linea de iniciar tiempo boton");
-document.getElementById("iniciarTiempo").addEventListener("click", arrancar_tiempo)
+	document.getElementById("iniciarTiempo").addEventListener("click", arrancar_tiempo)
 }
 
 
@@ -204,11 +210,37 @@ function cargar_tapete_inicial(mazo) {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 	// poner las cartas en el tapete
 	//añadir los elementos del mazo en un div del array
-
+	console.log("funcion cargar tapete inicial");
 	//tapete es el div con id tapete_inicial	
-	var tapete = document.getElementById("tapete_inicial");
+	var tapete = document.getElementById("inicial");
+	// Crear un nuevo div para las cartas del tapete
+	var tapete_cartas = document.createElement("div");
 
 
+	//variables de inicio de posiciones horizontal y vertical
+	let posicionHorizontal = 0;
+	let posicionVertical = 0;
+
+	// Iterar sobre cada carta en el array baraja
+	mazo.forEach(carta => {
+		// Agregar la clase "principal" a cada carta
+		//carta.classList.add("principal");
+		var imgCarta = carta[0];
+		// Establecer la posición de la carta
+		imgCarta.style.position = "absolute"
+		imgCarta.style.left = `${posicionHorizontal}px`;
+		imgCarta.style.top = `${posicionVertical}px`;
+
+		// Aumentar la posición para la siguiente carta
+		posicionHorizontal += 6; // Ajusta este valor según el desplazamiento horizontal deseado
+		posicionVertical += 6; // Ajusta este valor según el desplazamiento vertical deseado
+
+		// Agregar la carta al contenedor en el documento HTML
+		tapete_cartas.appendChild(imgCarta);
+
+	});
+	// Agregar el nuevo div de cartas al tapete inicial
+	tapete.appendChild(tapete_cartas);
 } // cargar_tapete_inicial
 
 
