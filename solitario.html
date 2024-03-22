@@ -12,7 +12,7 @@
         <!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 		Invocar a los ficheros de estilos y al JavaScript donde proceda
         -->     
-		<script src="/js/solitario.js"></script>
+		
 
 	</head>
 
@@ -44,7 +44,8 @@
 				de elementos span -->
 			<div id="mesa">
 				<div class="tapetes_superiores">
-					<div id="inicial" class="tapete" id="tapete_inicial"><span id="contador_inicial" class="contador"></span></div><!--
+					<!-- id="inicial" en class tapete id="tapete_inicial"-->
+					<div id="inicial" class="tapete" ><span id="contador_inicial" class="contador"></span></div><!--
 					--><div id="sobrantes" class="tapete"><span id="contador_sobrantes" class="contador"></span></div>
 				</div>
 				<div id="receptor1" class="tapete receptor"><span id="contador_receptor1" class="contador"></span></div><!--
@@ -57,5 +58,7 @@
 			<button id="reset" class="btn btn-danger">Reiniciar</button>
 			<button id="iniciarTiempo" class="btn btn-danger">Iniciar tiempo</button>
 		</div> <!-- class="central" -->
+		<!-- Invocamos el javascript principal-->
+		<script src="/js/solitario.js"></script>
     </body>
 </html>

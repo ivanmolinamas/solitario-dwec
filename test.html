@@ -85,7 +85,7 @@
                 //asingo atributo scr, alt y ancho a la carta 
                 carta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
                 carta.setAttribute("alt", "Carata de baraja");
-                carta.setAttribute("width", "70");
+                carta.setAttribute("width", "80");
                 //añadimos la carta al tapete
                 //console.log(carta)
                 div.appendChild(carta);
@@ -100,11 +100,16 @@
             for (let x = 0; x < numeros.length; x++) {
                 var numero = numeros[x];
                 //creo la carta
-                var carta = document.createElement("img");
+                var imgCarta = document.createElement("img");
                 //asingo atributo scr, alt y ancho a la carta 
-                carta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
-                carta.setAttribute("alt", "Carata de baraja");
-                carta.setAttribute("width", "70");
+                imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
+                imgCarta.setAttribute("alt", "Carta de baraja");
+                imgCarta.setAttribute("width", "100");
+                var carta = [
+                    imgCarta,
+                    numero,
+                    palo
+                ]
                 //añadimos la carta al tapete
                 baraja.push(carta);
             }
@@ -138,19 +143,19 @@
         // Iterar sobre cada carta en el array baraja
         baraja.forEach(carta => {
             // Agregar la clase "principal" a cada carta
-            carta.classList.add("principal");
 
+            var imgCarta = carta[0];
             // Establecer la posición de la carta
-            carta.style.position = "absolute"
-            carta.style.left = `${posicionHorizontal}px`;
-            carta.style.top = `${posicionVertical}px`;
+            imgCarta.style.position = "absolute"
+            imgCarta.style.left = `${posicionHorizontal}px`;
+            imgCarta.style.top = `${posicionVertical}px`;
 
             // Aumentar la posición para la siguiente carta
-            posicionHorizontal += 15; // Ajusta este valor según el desplazamiento horizontal deseado
-            posicionVertical += 10; // Ajusta este valor según el desplazamiento vertical deseado
+            posicionHorizontal += 4; // Ajusta este valor según el desplazamiento horizontal deseado
+            posicionVertical += 4; // Ajusta este valor según el desplazamiento vertical deseado
 
             // Agregar la carta al contenedor en el documento HTML
-            contenedor.appendChild(carta);
+            contenedor.appendChild(elementoImg);
         });
     </script>
 </body>
