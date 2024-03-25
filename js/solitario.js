@@ -82,7 +82,7 @@ function comenzar_juego() {
 			//asingo atributo scr, alt y ancho a la carta 
 			imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
 			imgCarta.setAttribute("alt", "Carta de baraja");
-			imgCarta.setAttribute("width", "100");
+			imgCarta.setAttribute("width", "85");
 			var carta = [
 				imgCarta,
 				numero,
