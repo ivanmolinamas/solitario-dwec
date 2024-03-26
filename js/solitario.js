@@ -227,7 +227,7 @@ function cargar_tapete_inicial(mazo) {
 		//carta.classList.add("principal");
 		var imgCarta = carta[0];
 		// Establecer la posición de la carta
-		imgCarta.style.position = "absolute"
+		imgCarta.classList.add("carta")
 		imgCarta.style.left = `${posicionHorizontal}px`;
 		imgCarta.style.top = `${posicionVertical}px`;
 
@@ -242,7 +242,6 @@ function cargar_tapete_inicial(mazo) {
 	// Agregar el nuevo div de cartas al tapete inicial
 	tapete.appendChild(tapete_cartas);
 } // cargar_tapete_inicial
-
 
 /**
 	  Esta función debe incrementar el número correspondiente al contenido textual
@@ -269,10 +268,25 @@ function set_contador(contador, valor) {
 } // set_contador
 
 
+console.log("Mazo inicial:")
+console.log(mazo_inicial);
+
+
 // Desarrollo de la continuación del juego
 // Funciones drag & drop
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
+// Crear funcion que mueva cartas a los diferentes zonzas receptoras
+// la ide es que coja la imagen y la cambie del array de mazo al array receptor
+//abra que borrar de uno y agregar a otro
+//deberia tener dataset el html
 
-console.log("Mazo inicial:")
-console.log(mazo_inicial);
+//debera haber una funcion que actualize los receptores, sobrantes y mazo cada movimiento
+//en funcion de si es receptor, mazo o sobrante tendra una posicion sobre el tapete
+//es importante diferenciar entre los tres por el tema de la posicion
+
+//abra que comprobar que sean movimientos validos
+
+
+
+
