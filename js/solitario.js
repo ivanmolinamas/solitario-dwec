@@ -303,9 +303,25 @@ function drop(event) {
 	var zonaDestino = event.target.id;
 	console.log("zona destino es: " + zonaDestino)
 
+	//obtengo el padre del destino(por si es carta o es zona div)
+	//obtener el padre de la carta
+	var padre = event.target.parentNode;
+
+	// Obtener el ID del padre
+	var idDelPadre = padre.id;
+	console.log("id padre:" + idDelPadre);
+
 	//obtengo de donde proviene la carta
 	var origen = cartaArrastrada.dataset.ubicacion;
-	console.log("origen: "+origen);
+	//console.log("origen: " + origen);
+
+	//compruebo si es el padre o el hijo la zona destino
+	var zona4letras = zonaDestino.substring(0, 6);
+	var zona4letrasPadre = idDelPadre.substring(0, 6);
+	console.log("zona destino 4 : "+zona4letras);
+	console.log("zona destino 4 padre: "+zona4letrasPadre)
+	//var idContenedorDestino = zona4letras === zona4letrasPadre ? idDelPadre : targetZoneId;
+
 
 	cambioMazo(cartaArrastrada, origen, zonaDestino);
 }
@@ -324,22 +340,22 @@ let mazo_receptor4 = [];
 */
 
 let mazos = {
-		"mazo": mazo_inicial,
-		"sobrantes": mazo_sobrantes,
-		"receptor1": mazo_receptor1,
-		"receptor2": mazo_receptor2,
-		"receptor3": mazo_receptor3,
-		"receptor4": mazo_receptor4
-	};
+	"mazo": mazo_inicial,
+	"sobrantes": mazo_sobrantes,
+	"receptor1": mazo_receptor1,
+	"receptor2": mazo_receptor2,
+	"receptor3": mazo_receptor3,
+	"receptor4": mazo_receptor4
+};
 
-	//de sobrantes a receptores hay problema
+//de sobrantes a receptores hay problema
 
 
 
 function cambioMazo(carta, origen, destino) {
 
-//Quizas usando algo asi pueda ahorrar codigo para saber donde vieneny donde van las cartas
-	
+	//Quizas usando algo asi pueda ahorrar codigo para saber donde vieneny donde van las cartas
+
 	//declaro segun proceda, mazo de origen y destino
 	mazo_origen = mazos[origen];
 
@@ -355,51 +371,51 @@ function cambioMazo(carta, origen, destino) {
 
 	//refresco el HTML
 	actualizarPosicionCartasHTML();
-/*
-	
-	switch (destino) {
-		case "sobrantes":
-			//agrego la carta a receptor 1
-			mazo_sobrantes.push(carta);
-			//saco la carta de mazo inicial
-			mazo_inicial.pop();
-			//actualizo el html
-			actualizarPosicionCartasHTML();
-			break;
-		case "receptor1":
-			//agrego la carta a receptor 1
-			mazo_receptor1.push(carta);
-			//saco la carta de mazo inicial
-			mazo_inicial.pop();
-			//actualizo el html
-			actualizarPosicionCartasHTML();
-			break;
-		case "receptor2":
-			//agrego la carta a receptor 1
-			mazo_receptor2.push(carta);
-			//saco la carta de mazo inicial
-			mazo_inicial.pop();
-			//actualizo el html
-			actualizarPosicionCartasHTML();
-			break;
-		case "receptor3":
-			//agrego la carta a receptor 1
-			mazo_receptor3.push(carta);
-			//saco la carta de mazo inicial
-			mazo_inicial.pop();
-			//actualizo el html
-			actualizarPosicionCartasHTML();
-			break;
-		case "receptor4":
-			//agrego la carta a receptor 1
-			mazo_receptor4.push(carta);
-			//saco la carta de mazo inicial
-			mazo_inicial.pop();
-			//actualizo el html
-			actualizarPosicionCartasHTML();
-			break;
-	}
-	*/
+	/*
+		
+		switch (destino) {
+			case "sobrantes":
+				//agrego la carta a receptor 1
+				mazo_sobrantes.push(carta);
+				//saco la carta de mazo inicial
+				mazo_inicial.pop();
+				//actualizo el html
+				actualizarPosicionCartasHTML();
+				break;
+			case "receptor1":
+				//agrego la carta a receptor 1
+				mazo_receptor1.push(carta);
+				//saco la carta de mazo inicial
+				mazo_inicial.pop();
+				//actualizo el html
+				actualizarPosicionCartasHTML();
+				break;
+			case "receptor2":
+				//agrego la carta a receptor 1
+				mazo_receptor2.push(carta);
+				//saco la carta de mazo inicial
+				mazo_inicial.pop();
+				//actualizo el html
+				actualizarPosicionCartasHTML();
+				break;
+			case "receptor3":
+				//agrego la carta a receptor 1
+				mazo_receptor3.push(carta);
+				//saco la carta de mazo inicial
+				mazo_inicial.pop();
+				//actualizo el html
+				actualizarPosicionCartasHTML();
+				break;
+			case "receptor4":
+				//agrego la carta a receptor 1
+				mazo_receptor4.push(carta);
+				//saco la carta de mazo inicial
+				mazo_inicial.pop();
+				//actualizo el html
+				actualizarPosicionCartasHTML();
+				break;
+		}
+		*/
 }
 
 //let mazo_sobrantes = [];

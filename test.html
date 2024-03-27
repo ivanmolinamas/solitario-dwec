@@ -319,6 +319,7 @@
             event.preventDefault();
         }
 
+        
         function drop(event) {
 
             event.preventDefault();
@@ -328,10 +329,33 @@
             // ??? event.target.appendChild(document.getElementById(data));
             //obtengo el ID de la zona del drop
             var targetZoneId = event.target.id;
+            console.log("targetZone: " + targetZoneId);
             pilaQuitar = cartaArrastrada.dataset.pila;
 
+            //obtener el padre de la carta
+            var padre = event.target.parentNode;
+
+            // Obtener el ID del padre
+            var idDelPadre = padre.id;
+            console.log("id padre:" + idDelPadre);
 
 
+            // Verificar si el objetivo es un hijo y obtener el ID del padre
+            var zona4letras = targetZoneId.substring(0, 4);
+            var zona4letrasPadre = idDelPadre.substring(0, 4);
+
+            var idContenedor = zona4letras === zona4letrasPadre ? idDelPadre : targetZoneId;
+
+            console.log("ID del contenedor: " + idContenedor);
+
+        
+/*
+            if (zona4letras != zona4letrasPadre) {
+                console.log("has depositado la carta sobre otra carta")
+                targetZoneId = idDelPadre;
+            }
+*/
+           
             //comprobamos que son distinto color las cartas
 
             //obtenemos el color de la carta seleccionada
@@ -340,9 +364,8 @@
             //obtenemos el color de la ulitma carta destino
             //obtengo el array de el tarjet y obtengo su ultima carta 
             //con la funcion devolverNumeroArray le pasamos la zona y nos devuelve el numero
-            var numArray = devolverNumeroArray(targetZoneId);
-
-            //console.log("Array numero: "+numArray);
+            var numArray = devolverNumeroArray(idContenedor);
+            console.log("Array numero: "+numArray);
 
             var ultimaCarta = pilas[numArray][pilas[numArray].length - 1];
             //console.log("valor ultima carta: " + ultimaCarta);
@@ -352,7 +375,7 @@
 
             if (ColorCartaSeleccionada != colorDestino) {
                 //segun la zona hago una cosa u otra
-                switch (targetZoneId) {
+                switch (idContenedor) {
                     case "zona-0":
                         //agrego la carta a la pila
                         pilas[0].push(cartaArrastrada);
@@ -397,6 +420,43 @@
 
         }
 
+        /*
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("Text/plain");
+            cartaArrastrada = document.getElementById(data);
+
+            var targetZoneId = event.target.id;
+            console.log("targetZone: " + targetZoneId);
+
+            var padre = event.target.parentNode;
+            var idDelPadre = padre.id;
+            console.log("id padre: " + idDelPadre);
+
+            // Verificar si el objetivo es un hijo y obtener el ID del padre
+            var zona4letras = targetZoneId.substring(0, 4);
+            var zona4letrasPadre = idDelPadre.substring(0, 4);
+
+            var idContenedor = zona4letras === zona4letrasPadre ? idDelPadre : targetZoneId;
+
+            console.log("ID del contenedor: " + idContenedor);
+
+            var pilaQuitar = cartaArrastrada.dataset.pila;
+            var ColorCartaSeleccionada = cartaArrastrada.dataset.color;
+
+            var numArray = devolverNumeroArray(idContenedor);
+            var ultimaCarta = pilas[numArray][pilas[numArray].length - 1];
+            var colorDestino = ultimaCarta.dataset.color;
+
+            if (ColorCartaSeleccionada !== colorDestino) {
+                // Acciones comunes para todas las zonas
+                pilas[numArray].push(cartaArrastrada);
+                pilas[pilaQuitar].pop();
+                ponerCaratasZona();
+            }
+        }
+*/
+
         function devolverNumeroArray(zona) {
             //este devuelve el numero del array dependiendo de la zona
 
@@ -420,13 +480,13 @@
 
         // obtener el ID del padre
         // Obtener el elemento hijo
-        var hijo = document.getElementById("miElementoHijo");
+        //var hijo = document.getElementById("miElementoHijo");
 
         // Obtener el elemento padre
-        var padre = hijo.parentNode;
+      //  var padre = hijo.parentNode;
 
         // Obtener el ID del padre
-        var idDelPadre = padre.id;
+     //   var idDelPadre = padre.id;
 
     </script>
 </body>
