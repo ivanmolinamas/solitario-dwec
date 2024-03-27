@@ -301,11 +301,11 @@ function drop(event) {
 
 	//obtengo la zona donde se quiere arrastrar la carta
 	var zonaDestino = event.target.id;
-	//console.log("zona destino es: " + zonaDestino)
+	console.log("zona destino es: " + zonaDestino)
 
 	//obtengo de donde proviene la carta
 	var origen = cartaArrastrada.dataset.ubicacion;
-	//console.log(origen);
+	console.log("origen: "+origen);
 
 	cambioMazo(cartaArrastrada, origen, zonaDestino);
 }
@@ -314,20 +314,8 @@ function drop(event) {
 //borrar la carta de donde estaba quizas pueda saber donde estaba con un data en html
 //array -> mazo_receptor1 | HTML -> receptor1 | 
 
-function cambioMazo(carta, origen, destino) {
-
-	switch (destino) {
-		case "receptor1":
-			mazo_receptor1.push(carta);
-			//console.log(mazo_receptor1);
-			mazo_inicial.pop;
-			actualizarPosicionCartasHTML();
-			break;
-
-	}
-
-}
 /*
+let mazo_inicial = [];
 let mazo_sobrantes = [];
 let mazo_receptor1 = [];
 let mazo_receptor2 = [];
@@ -335,29 +323,118 @@ let mazo_receptor3 = [];
 let mazo_receptor4 = [];
 */
 
+let mazos = {
+		"mazo": mazo_inicial,
+		"sobrantes": mazo_sobrantes,
+		"receptor1": mazo_receptor1,
+		"receptor2": mazo_receptor2,
+		"receptor3": mazo_receptor3,
+		"receptor4": mazo_receptor4
+	};
+
+	//de sobrantes a receptores hay problema
+
+
+
+function cambioMazo(carta, origen, destino) {
+
+//Quizas usando algo asi pueda ahorrar codigo para saber donde vieneny donde van las cartas
+	
+	//declaro segun proceda, mazo de origen y destino
+	mazo_origen = mazos[origen];
+
+	//console.log("origen: "+ origen)
+	//console.log("destino: "+destino)
+	mazo_destino = mazos[destino];
+
+	//agrego la carta al destino
+	mazo_destino.push(carta);
+
+	//quito la ultima carta de origen
+	mazo_origen.pop();
+
+	//refresco el HTML
+	actualizarPosicionCartasHTML();
+/*
+	
+	switch (destino) {
+		case "sobrantes":
+			//agrego la carta a receptor 1
+			mazo_sobrantes.push(carta);
+			//saco la carta de mazo inicial
+			mazo_inicial.pop();
+			//actualizo el html
+			actualizarPosicionCartasHTML();
+			break;
+		case "receptor1":
+			//agrego la carta a receptor 1
+			mazo_receptor1.push(carta);
+			//saco la carta de mazo inicial
+			mazo_inicial.pop();
+			//actualizo el html
+			actualizarPosicionCartasHTML();
+			break;
+		case "receptor2":
+			//agrego la carta a receptor 1
+			mazo_receptor2.push(carta);
+			//saco la carta de mazo inicial
+			mazo_inicial.pop();
+			//actualizo el html
+			actualizarPosicionCartasHTML();
+			break;
+		case "receptor3":
+			//agrego la carta a receptor 1
+			mazo_receptor3.push(carta);
+			//saco la carta de mazo inicial
+			mazo_inicial.pop();
+			//actualizo el html
+			actualizarPosicionCartasHTML();
+			break;
+		case "receptor4":
+			//agrego la carta a receptor 1
+			mazo_receptor4.push(carta);
+			//saco la carta de mazo inicial
+			mazo_inicial.pop();
+			//actualizo el html
+			actualizarPosicionCartasHTML();
+			break;
+	}
+	*/
+}
+
+//let mazo_sobrantes = [];
+
+// funcion para actualiar la posicion de las cartas en HTML desde los mazos receptores
 function actualizarPosicionCartasHTML() {
 	//esta funcion coje los diferentes mazos receptores y los coloca en sus correspondientes receptores
 	//cojo las cartas de las pilas
 	//construyo a partir de ellas un elemento
 	//agrego la imagen correspondiente
 	//guardo en el elemento html correspondiente
-// Array de arrays
-let mazos = [mazo_sobrantes, mazo_receptor1, mazo_receptor2, mazo_receptor3, mazo_receptor4];
-	for (let i = 1; i < 4; i++) {
-		var contenedor = document.getElementById(`receptor${i}`)
-		  console.log("contenedor: " + contenedor)
-			// mazo_receptor  en el que trabajamos actualmente
-		  var mazo = `mazo_receptor${i}`;
-		for (let y = 0; y < mazo.length; y++) {
-			console.log("ping entra en segundo for")
-			var carta = mazo[y]; //obtengo la carta del array y posicion
-			console.log("carta: "+carta)
-			carta.style.left = "0px";
-			carta.style.top = `${y * 30}px`; //con el bucle for amplio los espacios top
-			carta.dataset.ubicacion = mazo_receptor+"i"
-			console.log("carta: "+carta)
+
+	// Array de arrays, para iterar con un for sobre los mazos
+	let mazos = [mazo_receptor1, mazo_receptor2, mazo_receptor3, mazo_receptor4];
+
+	for (let i = 0; i < mazos.length; i++) {
+		var contenedor = document.getElementById(`receptor${i + 1}`)
+		contenedor.innerHTML = "";
+		for (let y = 0; y < mazos[i].length; y++) {
+			var carta = mazos[i][y]; //obtengo la carta del array y posicion
+			carta.style.left = "10px"; //posicionamos para centrar
+			carta.style.top = `${y * 25}px`; //con el bucle for amplio los espacios top
+			carta.dataset.ubicacion = `receptor${i + 1}`
 			// Agregar la carta al contenedor en el documento HTML
 			contenedor.appendChild(carta);
 		}
 	}
+
+	mazo_sobrantes.forEach(carta => {
+		var contenedor = document.getElementById("sobrantes");
+		carta.style.left = "10px"; //posicionamos para centrar
+		carta.style.top = '10px'; //con el bucle for amplio los espacios top
+		carta.dataset.ubicacion = 'mazo_sobrantes'
+		// Agregar la carta al contenedor en el documento HTML
+		contenedor.appendChild(carta);
+	});
+
 }
