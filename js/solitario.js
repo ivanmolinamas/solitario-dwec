@@ -316,14 +316,17 @@ function drop(event) {
 	//console.log("origen: " + origen);
 
 	//compruebo si es el padre o el hijo la zona destino
-	var zona4letras = zonaDestino.substring(0, 6);
-	var zona4letrasPadre = idDelPadre.substring(0, 6);
+	var zona4letras = zonaDestino.substring(0, 8);
+	var zona4letrasPadre = idDelPadre.substring(0, 8);
 	console.log("zona destino 4 : "+zona4letras);
-	console.log("zona destino 4 padre: "+zona4letrasPadre)
-	//var idContenedorDestino = zona4letras === zona4letrasPadre ? idDelPadre : targetZoneId;
-
-
-	cambioMazo(cartaArrastrada, origen, zonaDestino);
+	console.log("zona destino ID padre: "+zona4letrasPadre)
+	var idContenedorDestino = zonaDestino;
+	if ("receptor" === zona4letrasPadre) {
+		console.log("has puesto la carta sobre otra carta")
+		idContenedorDestino = idDelPadre;
+	}
+	
+	cambioMazo(cartaArrastrada, origen, idContenedorDestino);
 }
 
 //Funcion que se le pasa la carta y la zona destino y cambia la carta al array que toca
