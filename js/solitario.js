@@ -1,8 +1,5 @@
 /***** INICIO DECLARACIÓN DE VARIABLES GLOBALES *****/
 
-console.log("Carga Solitario.js")
-window.addEventListener("load", inicio);
-//window.addEventListener("load", comenzar_juego)
 
 
 // Array de palos:
@@ -47,6 +44,7 @@ let temporizador = null; // manejador del temporizador
 
 /***** FIN DECLARACIÓN DE VARIABLES GLOBALES *****/
 
+
 //BOTON RESET COMENTADO!!!!!!!!!!!
 // Rutina asociada a boton reset: comenzar_juego
 //document.getElementById("reset").onclick = comenzar_juego;
@@ -56,6 +54,9 @@ let temporizador = null; // manejador del temporizador
 
 //window.onload = comenzar_juego;
 window.addEventListener("load", comenzar_juego)
+
+//window.addEventListener("load", inicio);
+//window.addEventListener("load", comenzar_juego)
 
 
 // Desarrollo del comienzo del juego
@@ -81,16 +82,23 @@ function comenzar_juego() {
 			var imgCarta = document.createElement("img");
 			//asingo atributo scr, alt y ancho a la carta 
 			imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
-			imgCarta.setAttribute("alt", "Carta de baraja");
-			imgCarta.setAttribute("width", "85");
-			var carta = [
-				imgCarta,
-				numero,
-				palo
-			]
+			imgCarta.setAttribute("alt", "Carta de baraja " + idcarta);
+			//le asignamos un ID
+			var idcarta = palo + "-" + numero;
+			imgCarta.setAttribute("id", idcarta)
+			//acemos que sea arrastable
+			imgCarta.setAttribute("draggable", "true");
+			imgCarta.setAttribute("ondragstart", "dragStart(event)")
+			//le asignamos segun el palo el color
+			var color = (palo == "ova" || palo == "cua") ? "naranja" : "gris";
+			//establecemos dataset numero, palo y color
+			imgCarta.dataset.numero = numero;
+			imgCarta.dataset.palo = palo;
+			imgCarta.dataset.color = color;
+			//le damos la posicion de la carta
+			imgCarta.dataset.ubicacion = "mazo";
 			//metemos las carats en un array
-			mazo_inicial.push(carta);
-			//console.log(mazo_inicial);
+			mazo_inicial.push(imgCarta);
 		}
 	}
 
@@ -139,15 +147,10 @@ function comenzar_juego() {
 	el resultado de la llamada a setInterval en alguna variable para llamar oportunamente
 	a "clearInterval" en su caso.   
 */
-function inicio() {
-	console.log("linea de iniciar tiempo boton");
-	document.getElementById("iniciarTiempo").addEventListener("click", arrancar_tiempo)
-}
 
 
 function arrancar_tiempo() {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
-	console.log("Ping arranca_tiempo");
 	var cont_tiempo = document.getElementById("contador_tiempo");
 
 	if (temporizador) clearInterval(temporizador);
@@ -184,8 +187,6 @@ function arrancar_tiempo() {
 
 */
 function barajar(mazo) {
-	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
-	console.log("PING BARAJAR MAZO")
 	// Recorremos el array desde el final hasta el principio
 	for (let i = mazo.length - 1; i > 0; i--) {
 		// Generamos un índice aleatorio entre 0 y i
@@ -200,7 +201,7 @@ function barajar(mazo) {
 
 
 /**
-	  En el elemento HTML que representa el tapete inicial (variable tapete_inicial)
+	En el elemento HTML que representa el tapete inicial (variable tapete_inicial)
 	se deben añadir como hijos todos los elementos <img> del array "mazo".
 	Antes de añadirlos, se deberían fijar propiedades como la anchura, la posición,
 	coordenadas "top" y "left", algun atributo de tipo "data-", etc.
@@ -210,7 +211,7 @@ function cargar_tapete_inicial(mazo) {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 	// poner las cartas en el tapete
 	//añadir los elementos del mazo en un div del array
-	console.log("funcion cargar tapete inicial");
+
 	//tapete es el div con id tapete_inicial	
 	var tapete = document.getElementById("inicial");
 	// Crear un nuevo div para las cartas del tapete
@@ -225,22 +226,22 @@ function cargar_tapete_inicial(mazo) {
 	mazo.forEach(carta => {
 		// Agregar la clase "principal" a cada carta
 		//carta.classList.add("principal");
-		var imgCarta = carta[0];
-		// Establecer la posición de la carta
-		imgCarta.classList.add("carta")
-		imgCarta.style.left = `${posicionHorizontal}px`;
-		imgCarta.style.top = `${posicionVertical}px`;
+		// Establecer la posición de la carta para cargar el tapete inicial
+		carta.classList.add("carta")
+		carta.style.left = `${posicionHorizontal}px`;
+		carta.style.top = `${posicionVertical}px`;
 
 		// Aumentar la posición para la siguiente carta
 		posicionHorizontal += 6; // Ajusta este valor según el desplazamiento horizontal deseado
 		posicionVertical += 6; // Ajusta este valor según el desplazamiento vertical deseado
 
 		// Agregar la carta al contenedor en el documento HTML
-		tapete_cartas.appendChild(imgCarta);
+		tapete_cartas.appendChild(carta);
 
 	});
 	// Agregar el nuevo div de cartas al tapete inicial
 	tapete.appendChild(tapete_cartas);
+
 } // cargar_tapete_inicial
 
 /**
@@ -268,10 +269,6 @@ function set_contador(contador, valor) {
 } // set_contador
 
 
-console.log("Mazo inicial:")
-console.log(mazo_inicial);
-
-
 // Desarrollo de la continuación del juego
 // Funciones drag & drop
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
@@ -287,6 +284,80 @@ console.log(mazo_inicial);
 
 //abra que comprobar que sean movimientos validos
 
+function dragStart(event) {
+	event.dataTransfer.setData("Text/plain", event.target.id);
+}
 
+function allowDrop(event) {
+	event.preventDefault();
+}
 
+function drop(event) {
+	event.preventDefault();
+	var data = event.dataTransfer.getData("Text/plain");
+	//obtengo la carta arrastrada por el ID
+	cartaArrastrada = document.getElementById(data);
+	//console.log("Carta arrastrada: " + cartaArrastrada);
 
+	//obtengo la zona donde se quiere arrastrar la carta
+	var zonaDestino = event.target.id;
+	//console.log("zona destino es: " + zonaDestino)
+
+	//obtengo de donde proviene la carta
+	var origen = cartaArrastrada.dataset.ubicacion;
+	//console.log(origen);
+
+	cambioMazo(cartaArrastrada, origen, zonaDestino);
+}
+
+//Funcion que se le pasa la carta y la zona destino y cambia la carta al array que toca
+//borrar la carta de donde estaba quizas pueda saber donde estaba con un data en html
+//array -> mazo_receptor1 | HTML -> receptor1 | 
+
+function cambioMazo(carta, origen, destino) {
+
+	switch (destino) {
+		case "receptor1":
+			mazo_receptor1.push(carta);
+			//console.log(mazo_receptor1);
+			mazo_inicial.pop;
+			actualizarPosicionCartasHTML();
+			break;
+
+	}
+
+}
+/*
+let mazo_sobrantes = [];
+let mazo_receptor1 = [];
+let mazo_receptor2 = [];
+let mazo_receptor3 = [];
+let mazo_receptor4 = [];
+*/
+
+function actualizarPosicionCartasHTML() {
+	//esta funcion coje los diferentes mazos receptores y los coloca en sus correspondientes receptores
+	//cojo las cartas de las pilas
+	//construyo a partir de ellas un elemento
+	//agrego la imagen correspondiente
+	//guardo en el elemento html correspondiente
+// Array de arrays
+let mazos = [mazo_sobrantes, mazo_receptor1, mazo_receptor2, mazo_receptor3, mazo_receptor4];
+	for (let i = 1; i < 4; i++) {
+		var contenedor = document.getElementById(`receptor${i}`)
+		  console.log("contenedor: " + contenedor)
+			// mazo_receptor  en el que trabajamos actualmente
+		  var mazo = `mazo_receptor${i}`;
+		for (let y = 0; y < mazo.length; y++) {
+			console.log("ping entra en segundo for")
+			var carta = mazo[y]; //obtengo la carta del array y posicion
+			console.log("carta: "+carta)
+			carta.style.left = "0px";
+			carta.style.top = `${y * 30}px`; //con el bucle for amplio los espacios top
+			carta.dataset.ubicacion = mazo_receptor+"i"
+			console.log("carta: "+carta)
+			// Agregar la carta al contenedor en el documento HTML
+			contenedor.appendChild(carta);
+		}
+	}
+}

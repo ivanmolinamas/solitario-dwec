@@ -35,7 +35,7 @@
             border: 1px solid black;
             display: inline-block;
             position: relative;
-            width: 125px;
+            width: 140px;
             height: 180px;
             background-color: aquamarine;
         }
@@ -128,19 +128,15 @@
             //Se generan los palos
             var palo = palos[i];
             //asignamos el color de la carta para el dataset
-            if (palo == "ova" || palo == "cua") {
-                var color = "naranja"
-            } else {
-                color = "gris"
-            }
+            var color = (palo == "ova" || palo == "cua") ? "naranja" : "gris";
+
             for (let x = 0; x < numeros.length; x++) {
                 var numero = numeros[x];
-                //genero el ID de la carta
+                //genero el ID de la carta para tener un ID y poder identificarla
                 var idcarta = palo + "-" + numero;
                 //creo la carta
                 var imgCarta = document.createElement("img");
                 //asingo atributo scr, alt y ancho a la carta 
-
                 imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
                 imgCarta.setAttribute("alt", "Carta de baraja");
                 imgCarta.setAttribute("width", "100");
