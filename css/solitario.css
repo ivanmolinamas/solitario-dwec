@@ -68,11 +68,12 @@ div.tapete#sobrantes{
 /* Color de fondo de los tapetes receptores */
 div.tapete.receptor{
 	background-color: lightgreen;
+
 }
 
 .carta{
 	position: absolute;
-	width: 80px;
+	width: 75px;
 	border-radius: 8px;
 	-webkit-box-shadow: 2px 3px 20px -10px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow: 2px 3px 20px -10px rgba(0, 0, 0, 0.75);

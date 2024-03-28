@@ -7,7 +7,7 @@ let palos = ["ova", "cua", "hex", "cir"];
 // Array de número de cartas:
 //let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
-let numeros = [9, 10, 11, 12];
+let numeros = [7, 8, 9, 10, 11, 12];
 
 // Paso (top y left) en pixeles de una carta a la siguiente en un mazo:
 let paso = 5;
@@ -55,6 +55,9 @@ let temporizador = null; // manejador del temporizador
 //window.onload = comenzar_juego;
 window.addEventListener("load", comenzar_juego)
 
+document.getElementById("reset").addEventListener("click", reiniciarJuego);
+
+
 //window.addEventListener("load", inicio);
 //window.addEventListener("load", comenzar_juego)
 
@@ -70,6 +73,7 @@ function comenzar_juego() {
 	*/
 
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
+
 
 	//codigo de baraja
 	for (let i = 0; i < palos.length; i++) {
@@ -111,13 +115,15 @@ function comenzar_juego() {
 	cargar_tapete_inicial(mazo_inicial);
 
 	// Puesta a cero de contadores de mazos
+	
 	set_contador(cont_sobrantes, 0);
+	/*
 	set_contador(cont_receptor1, 0);
 	set_contador(cont_receptor2, 0);
 	set_contador(cont_receptor3, 0);
 	set_contador(cont_receptor4, 0);
 	set_contador(cont_movimientos, 0);
-
+*/
 	// Arrancar el conteo de tiempo
 	arrancar_tiempo();
 
@@ -152,7 +158,7 @@ function comenzar_juego() {
 function arrancar_tiempo() {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 	var cont_tiempo = document.getElementById("contador_tiempo");
-
+	console.log("valor cont_tiempo en arracar tiempo"+cont_tiempo);
 	if (temporizador) clearInterval(temporizador);
 	var hms = function () {
 		var seg = Math.trunc(segundos % 60);
@@ -216,7 +222,7 @@ function cargar_tapete_inicial(mazo) {
 	var tapete = document.getElementById("inicial");
 	// Crear un nuevo div para las cartas del tapete
 	var tapete_cartas = document.createElement("div");
-
+	tapete_cartas.setAttribute("id", "tapete_inicial");
 
 	//variables de inicio de posiciones horizontal y vertical
 	let posicionHorizontal = 0;
@@ -248,6 +254,7 @@ function cargar_tapete_inicial(mazo) {
 	  Esta función debe incrementar el número correspondiente al contenido textual
 		  del elemento que actúa de contador
 */
+
 function inc_contador(contador) {
 	contador.innerHTML = +contador.innerHTML + 1;
 } // inc_contador
@@ -265,8 +272,54 @@ function dec_contador(contador) {
 */
 function set_contador(contador, valor) {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
+	// contador de movimientos!!!
+	// tambien es contador de tiempo!!!
+	//console.log("valor contador: "+contador)
 	contador.innerHTML = valor;
+
+
+	// se le pasa el contador y el numero
+
+
 } // set_contador
+
+// contador de cartas sobrantes
+function contadorSobrantes() {
+	var numeroTotalCartasSobrantes = mazo_sobrantes.length;
+	console.log(numeroTotalCartasSobrantes);
+	cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
+}
+
+
+// Funcion reiniciar el Juego
+function reiniciarJuego() {
+	//Si se reinicia el juego debe:
+	// limpiarse los mazos sobrantes y receptores
+	//volver a barajar y reiniciar tiempo
+
+	//se formatean los mazos a 0
+	mazo_inicial = [];
+	mazo_sobrantes = [];
+	mazo_receptor1 = [];
+	mazo_receptor2 = [];
+	mazo_receptor3 = [];
+	mazo_receptor4 = [];
+	//borramos el div que contiene las cartas
+	var tapete = document.getElementById("inicial");
+	var hijo = tapete.lastChild; //selecionar el ultimo hijo
+	//eliminar el nodo donde estan las cartas del tapete principal
+	tapete.removeChild(hijo);
+	//se vacian los receptores
+	actualizarPosicionCartasHTML();
+	//se comienza el juego
+	comenzar_juego();
+}
+
+
+
+
+
+
 
 
 // Desarrollo de la continuación del juego
@@ -297,11 +350,9 @@ function drop(event) {
 	var data = event.dataTransfer.getData("Text/plain");
 	//obtengo la carta arrastrada por el ID
 	cartaArrastrada = document.getElementById(data);
-	//console.log("Carta arrastrada: " + cartaArrastrada);
 
 	//obtengo la zona donde se quiere arrastrar la carta
 	var zonaDestino = event.target.id;
-	console.log("zona destino es: " + zonaDestino)
 
 	//obtengo el padre del destino(por si es carta o es zona div)
 	//obtener el padre de la carta
@@ -309,39 +360,31 @@ function drop(event) {
 
 	// Obtener el ID del padre
 	var idDelPadre = padre.id;
-	console.log("id padre:" + idDelPadre);
 
 	//obtengo de donde proviene la carta
 	var origen = cartaArrastrada.dataset.ubicacion;
-	//console.log("origen: " + origen);
 
 	//compruebo si es el padre o el hijo la zona destino
 	var zona4letras = zonaDestino.substring(0, 8);
 	var zona4letrasPadre = idDelPadre.substring(0, 8);
-	console.log("zona destino 4 : "+zona4letras);
-	console.log("zona destino ID padre: "+zona4letrasPadre)
+
 	var idContenedorDestino = zonaDestino;
-	if ("receptor" === zona4letrasPadre) {
-		console.log("has puesto la carta sobre otra carta")
+	//comprobar que el receptor es la carta
+	//si el id del padre es receptor o parecido, esta dejando la carta sobre otra carta
+	if ("receptor" == zona4letrasPadre || "sobrante" == zona4letrasPadre) {
 		idContenedorDestino = idDelPadre;
 	}
-	
+	//usamos la funcion cambioMazo para cambiar las cartas de posicion en los array
 	cambioMazo(cartaArrastrada, origen, idContenedorDestino);
+	//sumo un numero al contador de movimientos
+
 }
 
 //Funcion que se le pasa la carta y la zona destino y cambia la carta al array que toca
 //borrar la carta de donde estaba quizas pueda saber donde estaba con un data en html
 //array -> mazo_receptor1 | HTML -> receptor1 | 
 
-/*
-let mazo_inicial = [];
-let mazo_sobrantes = [];
-let mazo_receptor1 = [];
-let mazo_receptor2 = [];
-let mazo_receptor3 = [];
-let mazo_receptor4 = [];
-*/
-
+//creo un array con los mazos referenciados con el nombre y su array
 let mazos = {
 	"mazo": mazo_inicial,
 	"sobrantes": mazo_sobrantes,
@@ -351,19 +394,14 @@ let mazos = {
 	"receptor4": mazo_receptor4
 };
 
-//de sobrantes a receptores hay problema
 
-
-
+//funcion para cambiar las cartas de array, se define que carta, origen y desitno para su cambio
 function cambioMazo(carta, origen, destino) {
 
-	//Quizas usando algo asi pueda ahorrar codigo para saber donde vieneny donde van las cartas
-
-	//declaro segun proceda, mazo de origen y destino
+	//se obtiene el array de destino segun su nombre destino
 	mazo_origen = mazos[origen];
 
-	//console.log("origen: "+ origen)
-	//console.log("destino: "+destino)
+	//se obtiene en el array el mazo destino por su nombre
 	mazo_destino = mazos[destino];
 
 	//agrego la carta al destino
@@ -374,54 +412,8 @@ function cambioMazo(carta, origen, destino) {
 
 	//refresco el HTML
 	actualizarPosicionCartasHTML();
-	/*
-		
-		switch (destino) {
-			case "sobrantes":
-				//agrego la carta a receptor 1
-				mazo_sobrantes.push(carta);
-				//saco la carta de mazo inicial
-				mazo_inicial.pop();
-				//actualizo el html
-				actualizarPosicionCartasHTML();
-				break;
-			case "receptor1":
-				//agrego la carta a receptor 1
-				mazo_receptor1.push(carta);
-				//saco la carta de mazo inicial
-				mazo_inicial.pop();
-				//actualizo el html
-				actualizarPosicionCartasHTML();
-				break;
-			case "receptor2":
-				//agrego la carta a receptor 1
-				mazo_receptor2.push(carta);
-				//saco la carta de mazo inicial
-				mazo_inicial.pop();
-				//actualizo el html
-				actualizarPosicionCartasHTML();
-				break;
-			case "receptor3":
-				//agrego la carta a receptor 1
-				mazo_receptor3.push(carta);
-				//saco la carta de mazo inicial
-				mazo_inicial.pop();
-				//actualizo el html
-				actualizarPosicionCartasHTML();
-				break;
-			case "receptor4":
-				//agrego la carta a receptor 1
-				mazo_receptor4.push(carta);
-				//saco la carta de mazo inicial
-				mazo_inicial.pop();
-				//actualizo el html
-				actualizarPosicionCartasHTML();
-				break;
-		}
-		*/
 }
 
-//let mazo_sobrantes = [];
 
 // funcion para actualiar la posicion de las cartas en HTML desde los mazos receptores
 function actualizarPosicionCartasHTML() {
@@ -449,11 +441,13 @@ function actualizarPosicionCartasHTML() {
 
 	mazo_sobrantes.forEach(carta => {
 		var contenedor = document.getElementById("sobrantes");
+		contenedor.innerHTML = "";
 		carta.style.left = "10px"; //posicionamos para centrar
 		carta.style.top = '10px'; //con el bucle for amplio los espacios top
-		carta.dataset.ubicacion = 'mazo_sobrantes'
+		carta.dataset.ubicacion = 'sobrantes'
 		// Agregar la carta al contenedor en el documento HTML
 		contenedor.appendChild(carta);
-	});
 
+	});
+	contadorSobrantes(); //actualizamos el numero de cartas sobrantes
 }
