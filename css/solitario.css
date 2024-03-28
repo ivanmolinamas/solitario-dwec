@@ -70,7 +70,12 @@ div.tapete.receptor{
 	background-color: lightgreen;
 
 }
+/*
+div.tapete.receptor.target{
+	background-color: rgb(63, 128, 63);
 
+}
+*/
 .carta{
 	position: absolute;
 	width: 75px;

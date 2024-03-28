@@ -343,7 +343,10 @@ function dragStart(event) {
 
 function allowDrop(event) {
 	event.preventDefault();
+	//evento que se activa al pasar un arrastrado por enicma
+	//event.target.classList.add("target");
 }
+
 
 function drop(event) {
 	event.preventDefault();
@@ -376,7 +379,6 @@ function drop(event) {
 	}
 	//usamos la funcion cambioMazo para cambiar las cartas de posicion en los array
 	cambioMazo(cartaArrastrada, origen, idContenedorDestino);
-	//sumo un numero al contador de movimientos
 
 }
 
@@ -412,6 +414,9 @@ function cambioMazo(carta, origen, destino) {
 
 	//refresco el HTML
 	actualizarPosicionCartasHTML();
+
+	//sumo un movimiento al contador
+	inc_contador(cont_movimientos);
 }
 
 
