@@ -286,7 +286,7 @@ function set_contador(contador, valor) {
 // contador de cartas sobrantes
 function contadorSobrantes() {
 	var numeroTotalCartasSobrantes = mazo_sobrantes.length;
-	console.log(numeroTotalCartasSobrantes);
+	
 	cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
 }
 
@@ -428,7 +428,7 @@ function actualizarPosicionCartasHTML() {
 
 	for (let i = 0; i < mazos.length; i++) {
 		var contenedor = document.getElementById(`receptor${i + 1}`)
-		contenedor.innerHTML = "";
+		//contenedor.innerHTML = "";
 		for (let y = 0; y < mazos[i].length; y++) {
 			var carta = mazos[i][y]; //obtengo la carta del array y posicion
 			carta.style.left = "10px"; //posicionamos para centrar
@@ -441,7 +441,7 @@ function actualizarPosicionCartasHTML() {
 
 	mazo_sobrantes.forEach(carta => {
 		var contenedor = document.getElementById("sobrantes");
-		contenedor.innerHTML = "";
+		//contenedor.innerHTML = "";
 		carta.style.left = "10px"; //posicionamos para centrar
 		carta.style.top = '10px'; //con el bucle for amplio los espacios top
 		carta.dataset.ubicacion = 'sobrantes'
