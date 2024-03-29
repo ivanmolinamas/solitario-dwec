@@ -7,7 +7,7 @@ let palos = ["ova", "cua", "hex", "cir"];
 // Array de número de cartas:
 //let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
-let numeros = [7, 8, 9, 10, 11, 12];
+let numeros = [ 9, 10, 11, 12];
 
 // Paso (top y left) en pixeles de una carta a la siguiente en un mazo:
 let paso = 5;
@@ -122,8 +122,9 @@ function comenzar_juego() {
 	set_contador(cont_receptor2, 0);
 	set_contador(cont_receptor3, 0);
 	set_contador(cont_receptor4, 0);
+*/	
 	set_contador(cont_movimientos, 0);
-*/
+
 	// Arrancar el conteo de tiempo
 	arrancar_tiempo();
 
@@ -256,7 +257,8 @@ function cargar_tapete_inicial(mazo) {
 */
 
 function inc_contador(contador) {
-	contador.innerHTML = +contador.innerHTML + 1;
+
+	//contador.innerHTML = +contador.innerHTML + 1;
 } // inc_contador
 
 /**
