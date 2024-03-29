@@ -78,7 +78,7 @@ div.tapete.receptor.target{
 */
 .carta{
 	position: absolute;
-	width: 75px;
+	width: 70px;
 	border-radius: 8px;
 	-webkit-box-shadow: 2px 3px 20px -10px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow: 2px 3px 20px -10px rgba(0, 0, 0, 0.75);
