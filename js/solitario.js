@@ -7,10 +7,10 @@ let palos = ["ova", "cua", "hex", "cir"];
 // Array de número de cartas:
 //let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
-let numeros = [ 9, 10, 11, 12];
+let numeros = [9, 10, 11, 12];
 
 // Paso (top y left) en pixeles de una carta a la siguiente en un mazo:
-let paso = 5;
+let paso = 15;
 
 // Tapetes				
 let tapete_inicial = document.getElementById("inicial");
@@ -37,6 +37,8 @@ let cont_receptor3 = document.getElementById("cont_receptor3");
 let cont_receptor4 = document.getElementById("cont_receptor4");
 let cont_movimientos = document.getElementById("cont_movimientos");
 
+let numMovimientos = 0;
+
 // Tiempo
 let cont_tiempo = document.getElementById("cont_tiempo"); // span cuenta tiempo
 let segundos = 0;    // cuenta de segundos
@@ -47,7 +49,7 @@ let temporizador = null; // manejador del temporizador
 
 //BOTON RESET COMENTADO!!!!!!!!!!!
 // Rutina asociada a boton reset: comenzar_juego
-//document.getElementById("reset").onclick = comenzar_juego;
+document.getElementById("reset").onclick = comenzar_juego;
 
 // El juego arranca ya al cargar la página: no se espera a reiniciar
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
@@ -55,7 +57,7 @@ let temporizador = null; // manejador del temporizador
 //window.onload = comenzar_juego;
 window.addEventListener("load", comenzar_juego)
 
-document.getElementById("reset").addEventListener("click", reiniciarJuego);
+//document.getElementById("reset").addEventListener("click", reiniciarJuego);
 
 
 //window.addEventListener("load", inicio);
@@ -74,39 +76,8 @@ function comenzar_juego() {
 
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
-
-	//codigo de baraja
-	for (let i = 0; i < palos.length; i++) {
-		//Se generan los palos
-		var palo = palos[i];
-		for (let x = 0; x < numeros.length; x++) {
-			//declaro la variable numero para el numero de la carta
-			var numero = numeros[x];
-			//creo la carta
-			var imgCarta = document.createElement("img");
-			//asingo atributo scr, alt y ancho a la carta 
-			imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
-			imgCarta.setAttribute("alt", "Carta de baraja " + idcarta);
-			//le asignamos un ID
-			var idcarta = palo + "-" + numero;
-			imgCarta.setAttribute("id", idcarta)
-			//acemos que sea arrastable
-			imgCarta.setAttribute("draggable", "true");
-			imgCarta.setAttribute("ondragstart", "dragStart(event)")
-			//le asignamos segun el palo el color
-			var color = (palo == "ova" || palo == "cua") ? "naranja" : "gris";
-			//establecemos dataset numero, palo y color
-			imgCarta.dataset.numero = numero;
-			imgCarta.dataset.palo = palo;
-			imgCarta.dataset.color = color;
-			//le damos la posicion de la carta
-			imgCarta.dataset.ubicacion = "mazo";
-			//metemos las carats en un array
-			mazo_inicial.push(imgCarta);
-		}
-	}
-
-
+	//generar la baraja
+	generarBaraja();
 
 	// Barajar
 	barajar(mazo_inicial);
@@ -115,14 +86,11 @@ function comenzar_juego() {
 	cargar_tapete_inicial(mazo_inicial);
 
 	// Puesta a cero de contadores de mazos
-	
 	set_contador(cont_sobrantes, 0);
-	/*
 	set_contador(cont_receptor1, 0);
 	set_contador(cont_receptor2, 0);
 	set_contador(cont_receptor3, 0);
 	set_contador(cont_receptor4, 0);
-*/	
 	set_contador(cont_movimientos, 0);
 
 	// Arrancar el conteo de tiempo
@@ -159,7 +127,7 @@ function comenzar_juego() {
 function arrancar_tiempo() {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 	var cont_tiempo = document.getElementById("contador_tiempo");
-	console.log("valor cont_tiempo en arracar tiempo"+cont_tiempo);
+	console.log("valor cont_tiempo en arracar tiempo" + cont_tiempo);
 	if (temporizador) clearInterval(temporizador);
 	var hms = function () {
 		var seg = Math.trunc(segundos % 60);
@@ -193,6 +161,41 @@ function arrancar_tiempo() {
 		- Se intercambia el contenido de la posición i-ésima con el de la j-ésima
 
 */
+/**
+	 * Generar baraja
+	 */
+function generarBaraja() {
+	//codigo de baraja
+	for (let i = 0; i < palos.length; i++) {
+		//Se generan los palos
+		var palo = palos[i];
+		for (let x = 0; x < numeros.length; x++) {
+			//declaro la variable numero para el numero de la carta
+			var numero = numeros[x];
+			//creo la carta
+			var imgCarta = document.createElement("img");
+			//asingo atributo scr, alt y ancho a la carta 
+			imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
+			imgCarta.setAttribute("alt", "Carta de baraja " + idcarta);
+			//le asignamos un ID
+			var idcarta = palo + "-" + numero;
+			imgCarta.setAttribute("id", idcarta)
+			//acemos que sea arrastable
+			imgCarta.setAttribute("draggable", "true");
+			imgCarta.setAttribute("ondragstart", "dragStart(event)")
+			//le asignamos segun el palo el color
+			var color = (palo == "ova" || palo == "cua") ? "naranja" : "gris";
+			//establecemos dataset numero, palo y color
+			imgCarta.dataset.numero = numero;
+			imgCarta.dataset.palo = palo;
+			imgCarta.dataset.color = color;
+			//le damos la posicion de la carta
+			imgCarta.dataset.ubicacion = "mazo";
+			//metemos las cartas en el array mazo_inicial
+			mazo_inicial.push(imgCarta);
+		}
+	}
+}
 function barajar(mazo) {
 	// Recorremos el array desde el final hasta el principio
 	for (let i = mazo.length - 1; i > 0; i--) {
@@ -257,8 +260,9 @@ function cargar_tapete_inicial(mazo) {
 */
 
 function inc_contador(contador) {
-
-	//contador.innerHTML = +contador.innerHTML + 1;
+	console.log("numero movimientos total: " + contador);
+	//cont_inicial.innerHTML = contador;
+	contador.innerHTML = contador + 1;
 } // inc_contador
 
 /**
@@ -276,7 +280,8 @@ function set_contador(contador, valor) {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 	// contador de movimientos!!!
 	// tambien es contador de tiempo!!!
-	//console.log("valor contador: "+contador)
+	//console.log("valor valor: " + valor)
+	//console.log("valor de contador: " + contador)
 	contador.innerHTML = valor;
 
 
@@ -288,34 +293,18 @@ function set_contador(contador, valor) {
 // contador de cartas sobrantes
 function contadorSobrantes() {
 	var numeroTotalCartasSobrantes = mazo_sobrantes.length;
-	
-	cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
+	//cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
+	set_contador(cont_sobrantes, numeroTotalCartasSobrantes)
+	//cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
+	/*
+	for(i=0; i < 4; i++){
+		var numCartasReceptor = mazo_receptor1.length
+		//console.log(numCartasReceptor);
+		set_contador(cont_receptor1, numCartasReceptor);
+	} */
+
 }
 
-
-// Funcion reiniciar el Juego
-function reiniciarJuego() {
-	//Si se reinicia el juego debe:
-	// limpiarse los mazos sobrantes y receptores
-	//volver a barajar y reiniciar tiempo
-
-	//se formatean los mazos a 0
-	mazo_inicial = [];
-	mazo_sobrantes = [];
-	mazo_receptor1 = [];
-	mazo_receptor2 = [];
-	mazo_receptor3 = [];
-	mazo_receptor4 = [];
-	//borramos el div que contiene las cartas
-	var tapete = document.getElementById("inicial");
-	var hijo = tapete.lastChild; //selecionar el ultimo hijo
-	//eliminar el nodo donde estan las cartas del tapete principal
-	tapete.removeChild(hijo);
-	//se vacian los receptores
-	actualizarPosicionCartasHTML();
-	//se comienza el juego
-	comenzar_juego();
-}
 
 
 
@@ -328,14 +317,7 @@ function reiniciarJuego() {
 // Funciones drag & drop
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
-// Crear funcion que mueva cartas a los diferentes zonzas receptoras
-// la ide es que coja la imagen y la cambie del array de mazo al array receptor
-//abra que borrar de uno y agregar a otro
-//deberia tener dataset el html
 
-//debera haber una funcion que actualize los receptores, sobrantes y mazo cada movimiento
-//en funcion de si es receptor, mazo o sobrante tendra una posicion sobre el tapete
-//es importante diferenciar entre los tres por el tema de la posicion
 
 //abra que comprobar que sean movimientos validos
 
@@ -379,16 +361,14 @@ function drop(event) {
 	if ("receptor" == zona4letrasPadre || "sobrante" == zona4letrasPadre) {
 		idContenedorDestino = idDelPadre;
 	}
+	comprobarJugada(cartaArrastrada,origen ,idContenedorDestino)
 	//usamos la funcion cambioMazo para cambiar las cartas de posicion en los array
-	cambioMazo(cartaArrastrada, origen, idContenedorDestino);
+	//cambioMazo(cartaArrastrada, origen, idContenedorDestino);
+
+
 
 }
 
-//Funcion que se le pasa la carta y la zona destino y cambia la carta al array que toca
-//borrar la carta de donde estaba quizas pueda saber donde estaba con un data en html
-//array -> mazo_receptor1 | HTML -> receptor1 | 
-
-//creo un array con los mazos referenciados con el nombre y su array
 let mazos = {
 	"mazo": mazo_inicial,
 	"sobrantes": mazo_sobrantes,
@@ -397,6 +377,57 @@ let mazos = {
 	"receptor3": mazo_receptor3,
 	"receptor4": mazo_receptor4
 };
+
+
+/**
+ * Funcion comprobar jugadas, esta funcion comprueba que se inicie con un 12 y
+ * que los colores son alternos
+ */
+function comprobarJugada(carta, origen ,destino) {
+	//obtengo la carta y la zona de destino
+	//compruebo que la zona de destino esta vacia, y si lo esta la carta debe ser un 12
+	var mazoDestino = mazos[destino]
+	var cartasEnMazoDestino = mazos[destino].length;
+
+	//variables de numero y color de carta para la jugada
+	var numeroCarta = carta.dataset.numero
+	var colorCarta = carta.dataset.color
+	//comprobamos si el mazo esta vacio
+	var mazoVacio = (cartasEnMazoDestino === 0) ? true : false;
+	//comprueba que la carta sea un 12
+	var esCarta12 = (numeroCarta == 12) ? true : false;
+	//comprobamos si la carta va jugada o sobrantes
+	var cartaJugada = (destino != "sobrantes") ? true : false;
+	//obtenemos el valor del numero de la ultima carta de la pila desitno
+	var ultimaCartaEnMazo = mazoDestino[cartasEnMazoDestino - 1];
+
+	//compruego las jugadas en funcion de sus propiedades
+	if (cartaJugada) {
+		//comprueba que la carta es 12 y el mazo estan vacios
+		if (mazoVacio && esCarta12) {
+			//movimiento de carta OK 12 a vacio
+			cambioMazo(carta, origen, destino);
+
+		} 
+		
+		if (cartasEnMazoDestino != 0 && (ultimaCartaEnMazo.dataset.numero - 1) == numeroCarta && ultimaCartaEnMazo.dataset.color != colorCarta) {
+			//en esta pila hay cartas
+			//se acepta la jugada porque la carta es un numero menos a la que hay y diferente color
+			cambioMazo(carta, origen, destino);
+		}
+	}else{
+		cambioMazo(carta, origen, destino);
+	}
+
+	//compruebo el estado de los mazos sobrantes y tapete
+	barajarYrepartirSobrantes();
+}
+//Funcion que se le pasa la carta y la zona destino y cambia la carta al array que toca
+//borrar la carta de donde estaba quizas pueda saber donde estaba con un data en html
+//array -> mazo_receptor1 | HTML -> receptor1 | 
+
+//creo un array con los mazos referenciados con el nombre y su array
+
 
 
 //funcion para cambiar las cartas de array, se define que carta, origen y desitno para su cambio
@@ -418,7 +449,7 @@ function cambioMazo(carta, origen, destino) {
 	actualizarPosicionCartasHTML();
 
 	//sumo un movimiento al contador
-	inc_contador(cont_movimientos);
+	inc_contador(numMovimientos);
 }
 
 
@@ -439,7 +470,7 @@ function actualizarPosicionCartasHTML() {
 		for (let y = 0; y < mazos[i].length; y++) {
 			var carta = mazos[i][y]; //obtengo la carta del array y posicion
 			carta.style.left = "10px"; //posicionamos para centrar
-			carta.style.top = `${y * 25}px`; //con el bucle for amplio los espacios top
+			carta.style.top = `${y * paso}px`; //con el bucle for amplio los espacios top
 			carta.dataset.ubicacion = `receptor${i + 1}`
 			// Agregar la carta al contenedor en el documento HTML
 			contenedor.appendChild(carta);
@@ -457,4 +488,34 @@ function actualizarPosicionCartasHTML() {
 
 	});
 	contadorSobrantes(); //actualizamos el numero de cartas sobrantes
+}
+
+function cartaDragable(carta, pila){
+
+	//obtengo el array y compruebo si esta vacio
+	//si esta vacio no hago nada
+	//si esta lleno tengo que, decir que la ultima carta es dragable
+	//puedo obtener la longitud del array -1 para poner una condicion
+	//si la carta.numero == longitud-1 entonces es dragable
+	// true false, dragable con un if o condcional
+}
+
+function barajarYrepartirSobrantes(){
+	//si el mazo inicial esta vacio y sobrantes hay cartas
+	//barajar y vover a disponer
+	var cartasEnInicial = mazo_inicial.length;
+	var cartasEnSobrantes = mazo_sobrantes.length;
+
+	if (cartasEnInicial == 0 && cartasEnSobrantes != 0) {
+		console.log("ejecuto cambio de sobrante a mazo principal!!")
+		//cojo las cartas de sobrantes
+		mazo_inicial = mazo_sobrantes;
+		//borro mazo sobrantes, ahora estan en mazo inicial
+		mazo_sobrantes = [];
+		//barajo las cartas
+		barajar(mazo_inicial)
+		//dispongo sobre el tapete
+		cargar_tapete_inicial(mazo_inicial)
+
+	}
 }
