@@ -40,7 +40,7 @@ let cont_movimientos = document.getElementById("cont_movimientos");
 let numMovimientos = 0;
 
 // Tiempo
-let cont_tiempo = document.getElementById("cont_tiempo"); // span cuenta tiempo
+//let cont_tiempo = document.getElementById("cont_tiempo"); // span cuenta tiempo
 let segundos = 0;    // cuenta de segundos
 let temporizador = null; // manejador del temporizador
 
@@ -57,7 +57,7 @@ document.getElementById("reset").onclick = comenzar_juego;
 //window.onload = comenzar_juego;
 window.addEventListener("load", comenzar_juego)
 
-//document.getElementById("reset").addEventListener("click", reiniciarJuego);
+document.getElementById("reset").addEventListener("click", reiniciarJuego);
 
 
 //window.addEventListener("load", inicio);
@@ -284,32 +284,50 @@ function set_contador(contador, valor) {
 	//console.log("valor de contador: " + contador)
 	contador.innerHTML = valor;
 
-
-	// se le pasa el contador y el numero
-
-
 } // set_contador
+
 
 // contador de cartas sobrantes
 function contadorSobrantes() {
 	var numeroTotalCartasSobrantes = mazo_sobrantes.length;
-	//cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
-	set_contador(cont_sobrantes, numeroTotalCartasSobrantes)
-	//cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
-	/*
-	for(i=0; i < 4; i++){
-		var numCartasReceptor = mazo_receptor1.length
-		//console.log(numCartasReceptor);
-		set_contador(cont_receptor1, numCartasReceptor);
-	} */
-
+	
+	cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
 }
 
 
+// Funcion reiniciar el Juego
+function reiniciarJuego() {
+	//Si se reinicia el juego debe:
+	// limpiarse los mazos sobrantes y receptores
+	//volver a barajar y reiniciar tiempo
+
+	//se formatean los mazos a 0
+	mazo_inicial = [];
+	mazo_sobrantes = [];
+	mazo_receptor1 = [];
+	mazo_receptor2 = [];
+	mazo_receptor3 = [];
+	mazo_receptor4 = [];
+	//borramos el div que contiene las cartas
+	var tapete = document.getElementById("inicial");
+	var hijo = tapete.lastChild; //selecionar el ultimo hijo
+	//eliminar el nodo donde estan las cartas del tapete principal
+	tapete.removeChild(hijo);
+	//se vacian los receptores
+	actualizarPosicionCartasHTML();
+	//se comienza el juego
+	comenzar_juego();
+}
 
 
+// CUANDO MAZO TAPETE PRINCIPAL ESTE A 0 BARAJAR SOBRANTES Y VOLVER A DISPONER
+
+//comprobar que mazo tapete inicial es 0
+//si es 0 entonces funcion barajar
+//funcion poner sobre el tapete
 
 
+//LOS TAPETES RECEPTORES LLEVAN CONTADOR DE CARTAS,  Y EL TAPETE PRINCIPAL TAMBIEN!!!
 
 
 
@@ -331,10 +349,16 @@ function allowDrop(event) {
 	//event.target.classList.add("target");
 }
 
-
+/**
+ * 
+ * esta funcion se activa cuadno se arrastra una carta y se suelta en un area
+ * independiente de si es sobre una zona de recepcion o una carta la pondra 
+ * en el mazo correspondiente
+ */
 function drop(event) {
 	event.preventDefault();
 	var data = event.dataTransfer.getData("Text/plain");
+
 	//obtengo la carta arrastrada por el ID
 	cartaArrastrada = document.getElementById(data);
 
@@ -342,7 +366,6 @@ function drop(event) {
 	var zonaDestino = event.target.id;
 
 	//obtengo el padre del destino(por si es carta o es zona div)
-	//obtener el padre de la carta
 	var padre = event.target.parentNode;
 
 	// Obtener el ID del padre
@@ -352,14 +375,15 @@ function drop(event) {
 	var origen = cartaArrastrada.dataset.ubicacion;
 
 	//compruebo si es el padre o el hijo la zona destino
-	var zona4letras = zonaDestino.substring(0, 8);
-	var zona4letrasPadre = idDelPadre.substring(0, 8);
+	var idPadreSubstring = idDelPadre.substring(0, 8);
 
+	// en esta variable guardare la zona de destino de la carta
 	var idContenedorDestino = zonaDestino;
 	//comprobar que el receptor es la carta
 	//si el id del padre es receptor o parecido, esta dejando la carta sobre otra carta
-	if ("receptor" == zona4letrasPadre || "sobrante" == zona4letrasPadre) {
-		idContenedorDestino = idDelPadre;
+	//tambien para la zona de sobrantes
+	if ("receptor" == idPadreSubstring || "sobrante" == idPadreSubstring) {
+		idContenedorDestino = idDelPadre;//asignamos el id del padre en caso que sea true
 	}
 	comprobarJugada(cartaArrastrada,origen ,idContenedorDestino)
 	//usamos la funcion cambioMazo para cambiar las cartas de posicion en los array
@@ -430,12 +454,37 @@ function comprobarJugada(carta, origen ,destino) {
 
 //funcion para cambiar las cartas de array, se define que carta, origen y desitno para su cambio
 function cambioMazo(carta, origen, destino) {
-
+	
 	//se obtiene el array de destino segun su nombre destino
 	mazo_origen = mazos[origen];
 
 	//se obtiene en el array el mazo destino por su nombre
 	mazo_destino = mazos[destino];
+
+	////////////////////////////////////////
+	//se deberia comprobar si la carta es 12 y el tapete vacio, 
+	//o la carta es un numero menos al que hay
+	//obtenemos el numero de la carta
+	var numeroCarta = cartaArrastrada.dataset.numero;
+	var colorCarta = cartaArrastrada.dataset.color;
+	console.log(numeroCarta +" color:"+ colorCarta);
+	var numeroCartasEnMazoDestino = mazo_destino.length;
+	console.log("cartas en mazo destino: "+numeroCartasEnMazoDestino)
+
+
+	if(numeroCartasEnMazoDestino == 0 && numeroCarta == 12){
+		console.log("puedes mover carta")
+	}else{
+		//console.log("no puedes mover la carta")
+		//var ultimaCarta = mazo_destino[numeroCartasEnMazoDestino -1];
+		//var colorUltimaCarta = ultimaCarta.dataset.color;
+		//if(colorUltimaCarta != colorCarta){
+		//	console.log("puedes mover la carta")
+		//}
+		
+	}
+
+
 
 	//agrego la carta al destino
 	mazo_destino.push(carta);
@@ -463,26 +512,25 @@ function actualizarPosicionCartasHTML() {
 	let mazos = [mazo_receptor1, mazo_receptor2, mazo_receptor3, mazo_receptor4];
 
 	for (let i = 0; i < mazos.length; i++) {
-		var contenedor = document.getElementById(`receptor${i + 1}`)
-		//contenedor.innerHTML = "";
+		var tapete_destino = document.getElementById(`receptor${i + 1}`)
+		
 		for (let y = 0; y < mazos[i].length; y++) {
 			var carta = mazos[i][y]; //obtengo la carta del array y posicion
 			carta.style.left = "10px"; //posicionamos para centrar
 			carta.style.top = `${y * paso}px`; //con el bucle for amplio los espacios top
 			carta.dataset.ubicacion = `receptor${i + 1}`
-			// Agregar la carta al contenedor en el documento HTML
-			contenedor.appendChild(carta);
+			// Agregar la carta al tapete destino en el documento HTML
+			tapete_destino.appendChild(carta);
 		}
 	}
 
 	mazo_sobrantes.forEach(carta => {
-		var contenedor = document.getElementById("sobrantes");
-		//contenedor.innerHTML = "";
+		var tapte_sobrantes = document.getElementById("sobrantes");
 		carta.style.left = "10px"; //posicionamos para centrar
 		carta.style.top = '10px'; //con el bucle for amplio los espacios top
 		carta.dataset.ubicacion = 'sobrantes'
-		// Agregar la carta al contenedor en el documento HTML
-		contenedor.appendChild(carta);
+		// Agregar la carta al tapte_sobrantes en el documento HTML
+		tapte_sobrantes.appendChild(carta);
 
 	});
 	contadorSobrantes(); //actualizamos el numero de cartas sobrantes
