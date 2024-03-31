@@ -407,9 +407,7 @@ function comprobarJugada(carta, origen ,destino) {
 		if (mazoVacio && esCarta12) {
 			//movimiento de carta OK 12 a vacio
 			cambioMazo(carta, origen, destino);
-
 		} 
-		
 		if (cartasEnMazoDestino != 0 && (ultimaCartaEnMazo.dataset.numero - 1) == numeroCarta && ultimaCartaEnMazo.dataset.color != colorCarta) {
 			//en esta pila hay cartas
 			//se acepta la jugada porque la carta es un numero menos a la que hay y diferente color
@@ -449,7 +447,7 @@ function cambioMazo(carta, origen, destino) {
 	actualizarPosicionCartasHTML();
 
 	//sumo un movimiento al contador
-	inc_contador(numMovimientos);
+	//inc_contador(numMovimientos);
 }
 
 
@@ -506,16 +504,28 @@ function barajarYrepartirSobrantes(){
 	var cartasEnInicial = mazo_inicial.length;
 	var cartasEnSobrantes = mazo_sobrantes.length;
 
+	console.log("cartas en inicial:"+cartasEnInicial );
+	console.log("cartas en sobrantes:"+cartasEnSobrantes );
 	if (cartasEnInicial == 0 && cartasEnSobrantes != 0) {
 		console.log("ejecuto cambio de sobrante a mazo principal!!")
 		//cojo las cartas de sobrantes
-		mazo_inicial = mazo_sobrantes;
+		mazo_sobrantes.forEach(carta => {
+			carta.dataset.ubicacion = "mazo";
+			mazo_inicial.push(carta);
+		});
+
+		//debo cambiar el dataset de ubicacion de sobrantes a mazo_inicial!!!
+		//carta.dataset.ubicacion = 'sobrantes'
 		//borro mazo sobrantes, ahora estan en mazo inicial
 		mazo_sobrantes = [];
 		//barajo las cartas
 		barajar(mazo_inicial)
+		// debo borrar el div de mazo inicial!!!!!!!
+		var borrarDiv = document.getElementById("tapete_inicial")
+		borrarDiv.remove();
+
 		//dispongo sobre el tapete
-		cargar_tapete_inicial(mazo_inicial)
+		cargar_tapete_inicial(mazo_inicial);
 
 	}
 }
