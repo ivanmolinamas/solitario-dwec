@@ -133,7 +133,6 @@ function comenzar_juego() {
 function arrancar_tiempo() {
 	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 	var cont_tiempo = document.getElementById("contador_tiempo");
-	console.log("valor cont_tiempo en arracar tiempo" + cont_tiempo);
 	if (temporizador) clearInterval(temporizador);
 	var hms = function () {
 		var seg = Math.trunc(segundos % 60);
@@ -281,19 +280,11 @@ function dec_contador(contador) {
 */
 function set_contador(contador, valor) {
 	// Verifica si el contador es un elemento del DOM
-	if (contador instanceof HTMLElement) {
-		// Establece el valor del contador en el HTML
-		contador.textContent = valor;
-	}
+
+	contador.innerHTML = valor;
+
 } // set_contador
 
-
-// contador de cartas sobrantes
-function contadorSobrantes() {
-	var numeroTotalCartasSobrantes = mazo_sobrantes.length;
-
-	cont_sobrantes.innerHTML = numeroTotalCartasSobrantes;
-}
 
 
 // Funcion reiniciar el Juego
@@ -303,42 +294,28 @@ function reiniciarJuego() {
 	//volver a barajar y reiniciar tiempo
 
 	//se formatean los mazos a 0
-	mazo_inicial = [];
-	mazo_sobrantes = [];
-	mazo_receptor1 = [];
-	mazo_receptor2 = [];
-	mazo_receptor3 = [];
-	mazo_receptor4 = [];
+	mazo_inicial.length = 0;
+	mazo_sobrantes.length = 0;
+	mazo_receptor1.length = 0;
+	mazo_receptor2.length = 0;
+	mazo_receptor3.length = 0;
+	mazo_receptor4.length = 0;
 	//borramos el div que contiene las cartas
-	var tapete = document.getElementById("inicial");
-	var hijo = tapete.lastChild; //selecionar el ultimo hijo
-	//eliminar el nodo donde estan las cartas del tapete principal
-	tapete.removeChild(hijo);
-	//se vacian los receptores
-	actualizarPosicionCartasHTML();
+	
+	var borrarDiv = document.getElementById("tapete_inicial")
+	borrarDiv.remove();
+
 	//se comienza el juego
 	comenzar_juego();
+	//se vacian los receptores
+	actualizarPosicionCartasHTML();
 }
-
-
-// CUANDO MAZO TAPETE PRINCIPAL ESTE A 0 BARAJAR SOBRANTES Y VOLVER A DISPONER
-
-//comprobar que mazo tapete inicial es 0
-//si es 0 entonces funcion barajar
-//funcion poner sobre el tapete
-
-
-//LOS TAPETES RECEPTORES LLEVAN CONTADOR DE CARTAS,  Y EL TAPETE PRINCIPAL TAMBIEN!!!
-
 
 
 // Desarrollo de la continuación del juego
 // Funciones drag & drop
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
-
-
-//abra que comprobar que sean movimientos validos
 
 function dragStart(event) {
 	event.dataTransfer.setData("Text/plain", event.target.id);
@@ -436,7 +413,9 @@ function comprobarJugada(carta, origen, destino) {
 	//compruego las jugadas en funcion de sus propiedades
 	if (cartaJugada) {
 		//comprueba que la carta es 12 y el mazo estan vacios
-		if (mazoVacio && esCarta12) {
+		if (mazoVacio && !esCarta12) {
+			alert("solo puedes empezar con cartas de valor 12");
+		} else if (mazoVacio && esCarta12) {
 			//movimiento de carta OK 12 a vacio
 			cambioMazo(carta, origen, destino);
 		}
@@ -479,11 +458,11 @@ function cambioMazo(carta, origen, destino) {
 	//refresco el HTML
 	actualizarPosicionCartasHTML();
 	//actualizamos contadores
-	console.log(contadores[destino]);
-	console.log(contadores[origen]);
 
 	inc_contador(contadores[destino]);
+	inc_contador(cont_movimientos);
 	dec_contador(contadores[origen]);
+
 
 }
 
@@ -521,7 +500,7 @@ function actualizarPosicionCartasHTML() {
 		tapte_sobrantes.appendChild(carta);
 
 	});
-	contadorSobrantes(); //actualizamos el numero de cartas sobrantes
+	//contadorSobrantes(); //actualizamos el numero de cartas sobrantes
 }
 
 function cartaDragable(carta, pila) {
@@ -547,13 +526,14 @@ function barajarYrepartirSobrantes() {
 			mazo_inicial.push(carta);
 		});
 		//borro mazo sobrantes, ahora estan en mazo inicial
-		mazo_sobrantes = [];
+		mazo_sobrantes.length = 0;
 		//barajo las cartas
 		barajar(mazo_inicial)
 		// debo borrar el div de mazo inicial!!!!!!!
 		var borrarDiv = document.getElementById("tapete_inicial")
 		borrarDiv.remove();
-
+		//pongo a 0 el contador sobrantes
+		set_contador(cont_sobrantes, 0)
 		//dispongo sobre el tapete
 		cargar_tapete_inicial(mazo_inicial);
 
