@@ -407,7 +407,6 @@ let mazos = {
  * Funcion comprobar jugadas, esta funcion comprueba que se inicie con un 12 y
  * que los colores son alternos
  */
-
 function comprobarJugada(carta, origen ,destino) {
 	//obtengo la carta y la zona de destino
 	//compruebo que la zona de destino esta vacia, y si lo esta la carta debe ser un 12
