@@ -438,6 +438,7 @@ function comprobarJugada(carta, origen ,destino) {
 			cambioMazo(carta, origen, destino);
 		}
 	}else{
+		console.log("carta que va a sobrante");
 		cambioMazo(carta, origen, destino);
 	}
 
