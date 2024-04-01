@@ -535,8 +535,11 @@ function finJuego(){
 	//comprobamos cartas en las barajas inicial y sobrantes
 	let cartasMazoInicio = mazo_inicial.length == 0 ? true : false;
 	let cartasMazoSobrante = mazo_sobrantes.length == 0 ? true : false;
+	var movimientos = cont_movimientos.textContent
 	//si ambas estan a 0, ejecutamos mensaje ganador
 	if(cartasMazoInicio && cartasMazoSobrante){
-		alert("!Has completado el juego!")
+		//paramos el temporizador
+		clearInterval(temporizador);
+		alert("!Has completado el juego!\nHas necesitado un total de "+movimientos+" movimientos")
 	}
 }
