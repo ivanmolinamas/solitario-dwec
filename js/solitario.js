@@ -401,7 +401,8 @@ function barajarYrepartirSobrantes() {
 		set_contador(cont_sobrantes, 0)
 		//dispongo sobre el tapete
 		cargar_tapete_inicial(mazo_inicial);
-
+		// añadir otra vez numero de cartas en juego
+		set_contador(cont_inicial, mazo_inicial.length)
 	}
 	//comprobamos si a acabado el juego
 }
