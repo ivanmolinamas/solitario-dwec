@@ -436,10 +436,12 @@ function comprobarJugada(carta, origen ,destino) {
 			//en esta pila hay cartas
 			//se acepta la jugada porque la carta es un numero menos a la que hay y diferente color
 			cambioMazo(carta, origen, destino);
+			console.log("cambio realizado");
 		}
 	}else{
 		console.log("carta que va a sobrante");
 		cambioMazo(carta, origen, destino);
+		console.log("cambio realizado");
 	}
 
 	//compruebo el estado de los mazos sobrantes y tapete
