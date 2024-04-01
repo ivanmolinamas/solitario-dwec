@@ -1,67 +1,79 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<title>Solitario FP Los Enlaces</title>
-        <meta charset="utf-8">        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/solitario.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-		
-        <!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
+
+<head>
+	<title>Solitario FP Los Enlaces</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/solitario.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+	<!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 		Invocar a los ficheros de estilos y al JavaScript donde proceda
-        -->     
-		
+        -->
 
-	</head>
 
-    <body>
-		<div class="central">
-			<!-- Título principal -->
+</head>
 
-			<!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
+<body>
+	<div class="central">
+		<!-- Título principal -->
+
+		<!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 			Rellenar h1 e insertar el logo donde proceda
         	-->
-			<div class="cabecera">
-				<h1 id="titulo">Juego del Solitario</h1>
-				<img id="logo" src="imagenes/Logo.png" alt="logo Los Enlaces" height="60px">
-			</div>
-			
-			
-			<!-- Siguiente línea donde se indicará el tiempo transcurrido y la cantidad
+		<div class="cabecera">
+			<h1 id="titulo">Juego del Solitario</h1>
+			<img id="logo" src="imagenes/Logo.png" alt="logo Los Enlaces" height="60px">
+		</div>
+
+
+		<!-- Siguiente línea donde se indicará el tiempo transcurrido y la cantidad
 				de movimientos que se han hecho hasta el momento. Estos números se 
 				indicarán en los span internos -->
-			<h2 id="marcadores">
-				<span>Tiempo: <span id="contador_tiempo"></span></span>
-				<span style="display:inline-block; width:200px"></span>
-				<span>Movimientos: <span id="contador_movimientos" class=""></span></span>
-			</h2>
+		<h2 id="marcadores">
+			<span>Tiempo: <span id="contador_tiempo"></span></span>
+			<span style="display:inline-block; width:200px"></span>
+			<span>Movimientos: <span id="contador_movimientos" class=""></span></span>
+		</h2>
 
-			<!-- La "mesa" contendrá los 6 tapetes. En la parte superior dos de ellos 
+		<!-- La "mesa" contendrá los 6 tapetes. En la parte superior dos de ellos 
 				y en la parte inferior los cuatro restantes. Los contadores de los
 				mazos de cartas de cada tapete están indicados oportunamente dentro
 				de elementos span -->
-			<div id="mesa">
-				<div class="tapetes_superiores">
-					<!-- id="inicial" en class tapete id="tapete_inicial"-->
-					<div id="inicial" class="tapete" ><span id="contador_inicial" class="contador"></span></div><!--
-					--><div id="sobrantes" class="tapete" ondrop="drop(event)" ondragover="allowDrop(event)"><span id="contador_sobrantes" class="contador"></span></div>
+		<div id="mesa">
+			<div class="tapetes_superiores">
+				<!-- id="inicial" en class tapete id="tapete_inicial"-->
+				<div id="inicial" class="tapete">
+					<span id="contador_inicial" class="contador"></span>
+					<div id="tapete_inicial"></div>
 				</div>
-				<div id="receptor1" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span id="contador_receptor1" class="contador"></span></div><!--
-				--><div id="receptor2" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span id="contador_receptor2" class="contador"></span></div><!--
-				--><div id="receptor3" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span id="contador_receptor3" class="contador"></span></div><!--
-				--><div id="receptor4" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span id="contador_receptor4" class="contador"></span></div>			
-			</div>	
+				<div id="sobrantes" class="tapete" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+						id="contador_sobrantes" class="contador"></span></div>
+			</div>
+			<div id="receptor1" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+					id="contador_receptor1" class="contador"></span></div><!--
+				-->
+			<div id="receptor2" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+					id="contador_receptor2" class="contador"></span></div><!--
+				-->
+			<div id="receptor3" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+					id="contador_receptor3" class="contador"></span></div><!--
+				-->
+			<div id="receptor4" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+					id="contador_receptor4" class="contador"></span></div>
+		</div>
 
-			<!-- Botón de reset que reinicia todo: partida, contadores de tiempo, de movimientos, ... -->
-			<button id="reset" class="btn btn-danger">Reiniciar</button>
-		</div> <!-- class="central" -->
-		<!-- Invocamos el javascript principal-->
-		<!--<script src="/js/solitario.js"></script>-->
-		<script src="/js/solitario.js"></script>
-		<!--<script src="/solitario-dwec/js/solitario.js"></script>-->
-    </body>
+		<!-- Botón de reset que reinicia todo: partida, contadores de tiempo, de movimientos, ... -->
+		<button id="reset" class="btn btn-danger">Reiniciar</button>
+	</div> <!-- class="central" -->
+	<!-- Invocamos el javascript principal-->
+	<!--<script src="/js/solitario.js"></script>-->
+	<script src="/js/solitario.js"></script>
+	<!--<script src="/solitario-dwec/js/solitario.js"></script>-->
+</body>
 
 
 </html>
