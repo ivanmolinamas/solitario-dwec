@@ -5,7 +5,7 @@
 // Array de palos:
 let palos = ["ova", "cua", "hex", "cir"];
 // Array de número de cartas:
-//let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+// let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
 let numeros = [9, 10, 11, 12];
 
@@ -243,8 +243,8 @@ function cargar_tapete_inicial(mazo) {
 		carta.dataset.ubicacion = "mazo";
 
 		// Aumentar la posición para la siguiente carta
-		posicionHorizontal += 6; // Ajusta este valor según el desplazamiento horizontal deseado
-		posicionVertical += 6; // Ajusta este valor según el desplazamiento vertical deseado
+		posicionHorizontal += 5; // Ajusta este valor según el desplazamiento horizontal deseado
+		posicionVertical += 5; // Ajusta este valor según el desplazamiento vertical deseado
 
 		// Agregar la carta al contenedor en el documento HTML
 		tapete_cartas.appendChild(carta);
@@ -301,7 +301,7 @@ function reiniciarJuego() {
 	mazo_receptor3.length = 0;
 	mazo_receptor4.length = 0;
 	//borramos el div que contiene las cartas
-	
+
 	var borrarDiv = document.getElementById("tapete_inicial")
 	borrarDiv.remove();
 
@@ -480,12 +480,22 @@ function actualizarPosicionCartasHTML() {
 
 	for (let i = 0; i < mazos.length; i++) {
 		var tapete_destino = document.getElementById(`receptor${i + 1}`)
-
+		
 		for (let y = 0; y < mazos[i].length; y++) {
 			var carta = mazos[i][y]; //obtengo la carta del array y posicion
+			//calculamos si la carta debe ser arrastable, si es que es la ulitma
+			var esArrastable = (mazos[i][mazos[i].length -1] == mazos[i][y]) ? true : false;
+			//le damos una posicion
 			carta.style.left = "10px"; //posicionamos para centrar
 			carta.style.top = `${y * paso}px`; //con el bucle for amplio los espacios top
 			carta.dataset.ubicacion = `receptor${i + 1}`
+			//Se gestiona si la carta es arrastable o no
+			carta.setAttribute("draggable", "false");
+			//acemos que sea arrastable si la condicion es true
+			if(esArrastable){
+				carta.setAttribute("draggable", "true");
+			}else
+			carta.setAttribute("ondragstart", "dragStart(event)")
 			// Agregar la carta al tapete destino en el documento HTML
 			tapete_destino.appendChild(carta);
 		}
@@ -500,7 +510,9 @@ function actualizarPosicionCartasHTML() {
 		tapte_sobrantes.appendChild(carta);
 
 	});
-	//contadorSobrantes(); //actualizamos el numero de cartas sobrantes
+	//codigo para las cartas del tapete principal, cuyo style.left y top tienen otro paso
+
+
 }
 
 function cartaDragable(carta, pila) {
