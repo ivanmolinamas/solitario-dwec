@@ -5,9 +5,9 @@
 // Array de palos:
 let palos = ["ova", "cua", "hex", "cir"];
 // Array de número de cartas:
-// let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+ let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
-let numeros = [9, 10, 11, 12];
+//let numeros = [9, 10, 11, 12];
 
 // Paso (top y left) en pixeles de una carta a la siguiente en un mazo:
 let pasoInicial = 5;
@@ -387,7 +387,6 @@ function actualizarPosicionCartasHTML() {
 function barajarYrepartirSobrantes() {
 	//si el mazo inicial esta vacio y sobrantes hay cartas barajar y vover a disponer
 	if (mazo_inicial.length == 0 && mazo_sobrantes.length > 0) {
-		console.log("ejecuto cambio de sobrante a mazo principal!!")
 		//cojo las cartas de sobrantes
 		mazo_sobrantes.forEach(carta => {
 			mazo_inicial.push(carta);
@@ -404,7 +403,6 @@ function barajarYrepartirSobrantes() {
 		// añadir otra vez numero de cartas en juego
 		set_contador(cont_inicial, mazo_inicial.length)
 	}
-	//comprobamos si a acabado el juego
 }
 /**
  * Funcion para borrar el div llamado tapete inicial

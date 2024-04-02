@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="es-ES">
 
 <head>
 	<title>Solitario FP Los Enlaces</title>
@@ -13,8 +12,6 @@
 	<!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 		Invocar a los ficheros de estilos y al JavaScript donde proceda
         -->
-
-
 </head>
 
 <body>
@@ -26,7 +23,7 @@
         	-->
 		<div class="cabecera">
 			<h1 id="titulo">Juego del Solitario</h1>
-			<img id="logo" src="imagenes/Logo.png" alt="logo Los Enlaces" height="60px">
+			<img id="logo" src="imagenes/Logo.png" alt="logo Los Enlaces">
 		</div>
 
 
@@ -43,42 +40,42 @@
 				y en la parte inferior los cuatro restantes. Los contadores de los
 				mazos de cartas de cada tapete están indicados oportunamente dentro
 				de elementos span -->
-		<div id="mesa">
-			<div class="tapetes_superiores">
-				<!-- id="inicial" en class tapete id="tapete_inicial"-->
-				<div id="inicial" class="tapete">
-					<span id="contador_inicial" class="contador"></span>
-					<div id="tapete_inicial"></div>
+		<div class="container-flex">
+			<div id="mesa">
+				<div class="tapetes_superiores">
+					<!-- id="inicial" en class tapete id="tapete_inicial"-->
+					<div id="inicial" class="tapete">
+						<span id="contador_inicial" class="contador"></span>
+						<div id="tapete_inicial"></div>
+					</div>
+					<div id="sobrantes" class="tapete" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+							id="contador_sobrantes" class="contador"></span></div>
 				</div>
-				<div id="sobrantes" class="tapete" ondrop="drop(event)" ondragover="allowDrop(event)"><span
-						id="contador_sobrantes" class="contador"></span></div>
+				<div id="receptor1" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+						id="contador_receptor1" class="contador"></span></div><!--
+				-->
+				<div id="receptor2" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+						id="contador_receptor2" class="contador"></span></div><!--
+				-->
+				<div id="receptor3" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+						id="contador_receptor3" class="contador"></span></div><!--
+				-->
+				<div id="receptor4" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
+						id="contador_receptor4" class="contador"></span></div>
 			</div>
-			<div id="receptor1" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
-					id="contador_receptor1" class="contador"></span></div><!--
-				-->
-			<div id="receptor2" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
-					id="contador_receptor2" class="contador"></span></div><!--
-				-->
-			<div id="receptor3" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
-					id="contador_receptor3" class="contador"></span></div><!--
-				-->
-			<div id="receptor4" class="tapete receptor" ondrop="drop(event)" ondragover="allowDrop(event)"><span
-					id="contador_receptor4" class="contador"></span></div>
+		</div>
+		<!-- Botón de reset que reinicia todo: partida, contadores de tiempo, de movimientos, ... -->
+		<div class="container-flex row justify-content-center ">
+			<div class="col-6 text-center margin">
+				<button id="reset" class="btn btn-danger ">Reiniciar</button>
+			</div>
 		</div>
 
-		<!-- Botón de reset que reinicia todo: partida, contadores de tiempo, de movimientos, ... -->
-		<div class="row justify-content-center">
-			<div class="col-6 text-center">
-				<button id="reset" class="btn btn-danger">Reiniciar</button>
-			</div>
-		</div>
-		
 	</div> <!-- class="central" -->
 	<!-- Invocamos el javascript principal-->
 	<!--<script src="/js/solitario.js"></script>-->
 	<script src="/js/solitario.js"></script>
 	<!--<script src="/solitario-dwec/js/solitario.js"></script>-->
 </body>
-
 
 </html>
