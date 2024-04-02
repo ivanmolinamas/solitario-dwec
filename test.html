@@ -28,11 +28,14 @@
 
         }
 
-        #zona1,#zona2, #zona3, #zona4 {
+        #zona-0,
+        #zona-1,
+        #zona-2,
+        #zona-3 {
             border: 1px solid black;
             display: inline-block;
             position: relative;
-            width: 125px;
+            width: 140px;
             height: 180px;
             background-color: aquamarine;
         }
@@ -40,6 +43,14 @@
         div img {
             position: absolute;
             margin: 5px 10px;
+        }
+
+        .carta {
+            position: absolute;
+            border-radius: 18px;
+            -webkit-box-shadow: 2px 3px 20px -10px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 2px 3px 20px -10px rgba(0, 0, 0, 0.75);
+            box-shadow: 2px 3px 20px -10px rgba(0, 0, 0, 0.75);
         }
     </style>
 </head>
@@ -57,20 +68,23 @@
 
     <div id="drag">
         <h1>Drag And Drop</h1>
-        <div id="zona1" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <!-- <img id="carta" src="imagenes/baraja/1-cua.png" alt="carta" width="100px" draggable="true"
-                ondragstart="dragStart(event)">-->
-        </div>
-        <div id="zona2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <div id="zona3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <div id="zona4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="zona-0" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="zona-1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="zona-2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="zona-3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 
     </div>
 
     <script>
         //carga ponercartas al cargar la web entera
-        window.addEventListener("load", ponerCaratas);
-        window.addEventListener("load", ponerCaratasZona);
+        window.addEventListener("load", empezarJuego);
+        //window.addEventListener("load", ponerCaratasZona);
+
+
+        function empezarJuego() {
+            ponerCaratas();
+            ponerCaratasZona();
+        }
 
         let palos = ["ova", "cua", "hex", "cir"];
         // Array de número de cartas:
@@ -113,24 +127,32 @@
         for (let i = 0; i < palos.length; i++) {
             //Se generan los palos
             var palo = palos[i];
+            //asignamos el color de la carta para el dataset
+            var color = (palo == "ova" || palo == "cua") ? "naranja" : "gris";
+
             for (let x = 0; x < numeros.length; x++) {
                 var numero = numeros[x];
+                //genero el ID de la carta para tener un ID y poder identificarla
+                var idcarta = palo + "-" + numero;
                 //creo la carta
                 var imgCarta = document.createElement("img");
                 //asingo atributo scr, alt y ancho a la carta 
-                var currentID = palo + "-" + numero;
                 imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
                 imgCarta.setAttribute("alt", "Carta de baraja");
                 imgCarta.setAttribute("width", "100");
                 imgCarta.setAttribute("draggable", "true");
                 imgCarta.setAttribute("ondragstart", "dragStart(event)")
-                imgCarta.setAttribute("id", currentID)
+                imgCarta.setAttribute("id", idcarta)
+                //por dataset vamos a especificar el numero y color de la carta
+                imgCarta.dataset.numero = numero;
+                imgCarta.dataset.color = color;
+
 
                 //añadimos la carta al tapete
                 baraja.push(imgCarta);
             }
         }
-        console.log(baraja)
+        //       console.log(baraja)
 
         //funcion que mezcla la baraja
         function mezclarArray(array) {
@@ -146,11 +168,12 @@
 
         // Ejemplo de uso:
 
+
         function ponerCaratas() {
             //barajo la baraja usando la funcion y pasando la baraja
             mezclarArray(baraja);
             repartirPilas();
-            console.log(baraja); //ping
+            //     console.log(baraja); //ping
             // Obtener el contenedor de las cartas
             const contenedor = document.getElementById("contenedor");
             contenedor.setAttribute("ondrop", "drop(event)");
@@ -162,10 +185,8 @@
             // Iterar sobre cada carta en el array baraja
             baraja.forEach(carta => {
                 // Agregar la clase "principal" a cada carta
-
-
                 // Establecer la posición de la carta
-                carta.style.position = "absolute"
+                carta.style.classList = "carta"
                 carta.style.left = `${posicionHorizontal}px`;
                 carta.style.top = `${posicionVertical}px`;
 
@@ -182,111 +203,107 @@
         ////////////////////////////////////////////////////////////
         // Funcion para repartir las cartas en 4 pilas
 
-        function repartirPilas(){
+        function repartirPilas() {
             // quitar una carta de la baraja
             // agregar una carta a la pila  
             // repartir esto muchas veces
 
-            for (var i = 0; i< 4; i++){
+            for (var i = 0; i < 4; i++) {
                 pilas.push([]);
-                for(var j = 0; j < i + 1; j++ ){
+                for (var j = 0; j < i + 1; j++) {
                     const primeraCartaDeBaraja = baraja[0];
                     baraja.shift()
                     pilas[i].push(primeraCartaDeBaraja);
                 }
             }
-            console.log(baraja);
-            console.log("Pilas en escalera")
-            console.log(pilas);
+            // console.log(baraja);
+            // console.log("Pilas en escalera")
+            // console.log(pilas);
         }
 
 
         ////////////////////////////////////////////////////////////
         // Funcion que muestra el array de cartas de zona 1 y zona 2
         function ponerCaratasZona() {
-            console.log("Poner cartas por zona activado")
-            
-            // Obtener el contenedor de las cartas
-            //const contenedorZona = document.getElementById(zonaTarget);
-            //contenedor.setAttribute("ondrop", "drop(event)");
-            //contenedor.setAttribute("ondragover", "allowDrop(event)");
-            // Obtener la posición inicial para la primera carta
-            let posicionHorizontal = 0;
-            let posicionVertical = 0;
-
+            //console.log("Poner cartas por zona activado")
+            //cojo las cartas de las pilas
+            //construyo a partir de ellas un elemento
+            //agrego la imagen correspondiente
+            //guardo en el elemento html correspondiente
 
             for (let i = 0; i < pilas.length; i++) {
-                console.log("longitud pilas: "+i)
-                var z = ++i;
-                var zona = "zona"+z;
-                console.log("zona es: " + zona);
-                var contenedor = document.getElementById(zona);
-                var posicionTop = 0;
-                
-                for (let y = 0; y < pilas[i].length; y++) {
-                    pilas[i].forEach(carta=> {
-                        console.log("cartas zona:"+zona)
-                        //le cambiamos el estilo a la carta
-                        carta.style.position = "absolute";
-                        carta.style.top = `${posicionTop}px`;
+                var contenedor = document.getElementById(`zona-${i}`)
+                //  console.log("contenedor: " + contenedor)
 
-                        posicionTop += 25; // Ajusta este valor según el desplazamiento vertical deseado
-                        // Agregar la carta al contenedor en el documento HTML
-                        contenedor.appendChild(carta);
-                    })
+                for (let y = 0; y < pilas[i].length; y++) {
+                    var carta = pilas[i][y]; //obtengo la carta del array y posicion
+                    //le cambiamos el estilo a la carta
+                    carta.classList.add("carta")
+                    //carta.style.position = "absolute";
+                    carta.style.left = "0px";
+                    carta.style.top = `${y * 30}px`; //con el bucle for amplio los espacios top
+                    carta.dataset.pila = `${i}`;
+                    // Agregar la carta al contenedor en el documento HTML
+                    contenedor.appendChild(carta);
                 }
             }
-            // Iterar sobre cada carta en el array baraja
-            /*
-            arrayZona.forEach(carta => {
-
-                // Establecer la posición de la carta
-                carta.style.position = "absolute"
-                carta.style.left = `${posicionHorizontal}px`;
-                carta.style.top = `${posicionVertical}px`;
-
-                // Aumentar la posición para la siguiente carta
-                //posicionHorizontal += 4; // Ajusta este valor según el desplazamiento horizontal deseado
-                posicionVertical += 25; // Ajusta este valor según el desplazamiento vertical deseado
-
-                // Agregar la carta al contenedor en el documento HTML
-                contenedor.appendChild(imgCarta);
-               
-            }); */
         }
+        // Iterar sobre cada carta en el array baraja
+        /*
+        arrayZona.forEach(carta => {
 
+            // Establecer la posición de la carta
+            carta.style.position = "absolute"
+            carta.style.left = `${posicionHorizontal}px`;
+            carta.style.top = `${posicionVertical}px`;
+
+            // Aumentar la posición para la siguiente carta
+            //posicionHorizontal += 4; // Ajusta este valor según el desplazamiento horizontal deseado
+            posicionVertical += 25; // Ajusta este valor según el desplazamiento vertical deseado
+
+            // Agregar la carta al contenedor en el documento HTML
+            contenedor.appendChild(imgCarta);
+           
+        }); */
+
+
+
+
+        /*
         
-
-
-
-        function ponerCaratasZona2() {
-            console.log("Poner cartas zona 2 activado")
-            // Obtener el contenedor de las cartas
-            const contenedorZona1 = document.getElementById("zona2");
-            //contenedor.setAttribute("ondrop", "drop(event)");
-            //contenedor.setAttribute("ondragover", "allowDrop(event)");
-            // Obtener la posición inicial para la primera carta
-            let posicionHorizontal = 0;
-            let posicionVertical = 0;
-
-            // Iterar sobre cada carta en el array baraja
-            arrayZona2.forEach(carta => {
-
-                // Establecer la posición de la carta
-                carta.style.position = "absolute"
-                carta.style.left = `${posicionHorizontal}px`;
-                carta.style.top = `${posicionVertical}px`;
-
-                // Aumentar la posición para la siguiente carta
-                //posicionHorizontal += 4; // Ajusta este valor según el desplazamiento horizontal deseado
-                posicionVertical += 25; // Ajusta este valor según el desplazamiento vertical deseado
-
-                // Agregar la carta al contenedor en el documento HTML
-                contenedor.appendChild(imgCarta);
-            });
-        }
-
-
+                function ponerCaratasZona2() {
+                    console.log("Poner cartas zona 2 activado")
+                    // Obtener el contenedor de las cartas
+                    const contenedorZona1 = document.getElementById("zona2");
+                    //contenedor.setAttribute("ondrop", "drop(event)");
+                    //contenedor.setAttribute("ondragover", "allowDrop(event)");
+                    // Obtener la posición inicial para la primera carta
+                    let posicionHorizontal = 0;
+                    let posicionVertical = 0;
+        
+                    // Iterar sobre cada carta en el array baraja
+                    arrayZona2.forEach(carta => {
+        
+                        // Establecer la posición de la carta
+                        carta.style.position = "absolute"
+                        carta.style.left = `${posicionHorizontal}px`;
+                        carta.style.top = `${posicionVertical}px`;
+        
+                        // Aumentar la posición para la siguiente carta
+                        //posicionHorizontal += 4; // Ajusta este valor según el desplazamiento horizontal deseado
+                        posicionVertical += 25; // Ajusta este valor según el desplazamiento vertical deseado
+        
+                        // Agregar la carta al contenedor en el documento HTML
+                        contenedor.appendChild(imgCarta);
+                    });
+                }
+        
+        */
+        /*
+        saber si es la ultima carta
+         j es el bucle del for actual, y y es la pila, se resta 1
+        var esLaUltimaCartaDeLaPila = j === pilas[y]-1;
+        */
 
 
         /////////////////////////////////////////////////////////////
@@ -302,38 +319,175 @@
             event.preventDefault();
         }
 
+        
         function drop(event) {
 
             event.preventDefault();
             var data = event.dataTransfer.getData("Text/plain");
             cartaArrastrada = document.getElementById(data);
 
-            // Obtener el padre del elemento de imagen
-            var padreDeCartaArrastrada = cartaArrastrada.parentNode;
-
-            console.log(data);
-
-
-            event.target.appendChild(document.getElementById(data));
+            // ??? event.target.appendChild(document.getElementById(data));
             //obtengo el ID de la zona del drop
             var targetZoneId = event.target.id;
+            console.log("targetZone: " + targetZoneId);
+            pilaQuitar = cartaArrastrada.dataset.pila;
 
-            if (targetZoneId === 'zona1') {
-                //debo obtener el array de la carta no la img
+            //obtener el padre de la carta
+            var padre = event.target.parentNode;
 
-                arrayZona1.push(cartaArrastrada);
-                console.log(arrayZona1);
+            // Obtener el ID del padre
+            var idDelPadre = padre.id;
+            console.log("id padre:" + idDelPadre);
 
-                ponerCaratasZona("zona1");
 
-            } else if (targetZoneId === "zona2") {
+            // Verificar si el objetivo es un hijo y obtener el ID del padre
+            var zona4letras = targetZoneId.substring(0, 4);
+            var zona4letrasPadre = idDelPadre.substring(0, 4);
 
-                arrayZona2.push(cartaArrastrada);
-                console.log(arrayZona1);
+            var idContenedor = zona4letras === zona4letrasPadre ? idDelPadre : targetZoneId;
 
-                ponerCaratasZona2();
+            console.log("ID del contenedor: " + idContenedor);
+
+        
+/*
+            if (zona4letras != zona4letrasPadre) {
+                console.log("has depositado la carta sobre otra carta")
+                targetZoneId = idDelPadre;
+            }
+*/
+           
+            //comprobamos que son distinto color las cartas
+
+            //obtenemos el color de la carta seleccionada
+            var ColorCartaSeleccionada = cartaArrastrada.dataset.color;
+            console.log(ColorCartaSeleccionada)
+            //obtenemos el color de la ulitma carta destino
+            //obtengo el array de el tarjet y obtengo su ultima carta 
+            //con la funcion devolverNumeroArray le pasamos la zona y nos devuelve el numero
+            var numArray = devolverNumeroArray(idContenedor);
+            console.log("Array numero: "+numArray);
+
+            var ultimaCarta = pilas[numArray][pilas[numArray].length - 1];
+            //console.log("valor ultima carta: " + ultimaCarta);
+
+            var colorDestino = ultimaCarta.dataset.color;
+            console.log("color ulitma carta:" + colorDestino);
+
+            if (ColorCartaSeleccionada != colorDestino) {
+                //segun la zona hago una cosa u otra
+                switch (idContenedor) {
+                    case "zona-0":
+                        //agrego la carta a la pila
+                        pilas[0].push(cartaArrastrada);
+                        //quito la carta de la pila que viene
+                        console.log(pilas[pilaQuitar]);
+                        pilas[pilaQuitar].pop();
+                        //actualizo las pilas de la zona para actualizar cambios
+                        ponerCaratasZona();
+                        // console.log("ping en zona zero insertar carta")
+                        // console.log(pilas[0])
+                        break;
+                    case "zona-1":
+                        //agrego la carta a la pila
+                        pilas[1].push(cartaArrastrada);
+                        //quito la carta de la pila que viene
+                        console.log(pilas[pilaQuitar]);
+                        pilas[pilaQuitar].pop();
+                        //actualizo las pilas de la zona para actualizar cambios
+                        ponerCaratasZona();
+                        break;
+                    case "zona-2":
+                        //agrego la carta a la pila
+                        pilas[2].push(cartaArrastrada);
+                        //quito la carta de la pila que viene
+                        console.log(pilas[pilaQuitar]);
+                        pilas[pilaQuitar].pop();
+                        //actualizo las pilas de la zona para actualizar cambios
+                        ponerCaratasZona();
+                        break;
+                    case "zona-3":
+                        //agrego la carta a la pila
+                        pilas[3].push(cartaArrastrada);
+                        //quito la carta de la pila que viene
+                        console.log(pilas[pilaQuitar]);
+                        pilas[pilaQuitar].pop();
+                        //actualizo las pilas de la zona para actualizar cambios
+                        ponerCaratasZona();
+                        break;
+                }
+
+            }
+
+        }
+
+        /*
+        function drop(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("Text/plain");
+            cartaArrastrada = document.getElementById(data);
+
+            var targetZoneId = event.target.id;
+            console.log("targetZone: " + targetZoneId);
+
+            var padre = event.target.parentNode;
+            var idDelPadre = padre.id;
+            console.log("id padre: " + idDelPadre);
+
+            // Verificar si el objetivo es un hijo y obtener el ID del padre
+            var zona4letras = targetZoneId.substring(0, 4);
+            var zona4letrasPadre = idDelPadre.substring(0, 4);
+
+            var idContenedor = zona4letras === zona4letrasPadre ? idDelPadre : targetZoneId;
+
+            console.log("ID del contenedor: " + idContenedor);
+
+            var pilaQuitar = cartaArrastrada.dataset.pila;
+            var ColorCartaSeleccionada = cartaArrastrada.dataset.color;
+
+            var numArray = devolverNumeroArray(idContenedor);
+            var ultimaCarta = pilas[numArray][pilas[numArray].length - 1];
+            var colorDestino = ultimaCarta.dataset.color;
+
+            if (ColorCartaSeleccionada !== colorDestino) {
+                // Acciones comunes para todas las zonas
+                pilas[numArray].push(cartaArrastrada);
+                pilas[pilaQuitar].pop();
+                ponerCaratasZona();
             }
         }
+*/
+
+        function devolverNumeroArray(zona) {
+            //este devuelve el numero del array dependiendo de la zona
+
+            switch (zona) {
+                case "zona-0":
+                    return 0;
+                    break;
+                case "zona-1":
+                    return 1;
+                    break;
+                case "zona-2":
+                    return 2;
+                    break;
+                case "zona-3":
+                    return 3;
+                    break;
+            }
+        }
+
+        //////////////////////////////////////////////////////////////////
+
+        // obtener el ID del padre
+        // Obtener el elemento hijo
+        //var hijo = document.getElementById("miElementoHijo");
+
+        // Obtener el elemento padre
+      //  var padre = hijo.parentNode;
+
+        // Obtener el ID del padre
+     //   var idDelPadre = padre.id;
+
     </script>
 </body>
 
