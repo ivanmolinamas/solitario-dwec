@@ -6,12 +6,6 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/solitario.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-	<!--/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
-		Invocar a los ficheros de estilos y al JavaScript donde proceda
-        -->
 </head>
 
 <body>
@@ -40,7 +34,7 @@
 				y en la parte inferior los cuatro restantes. Los contadores de los
 				mazos de cartas de cada tapete están indicados oportunamente dentro
 				de elementos span -->
-		<div class="container-flex">
+		<div class="container-fluid">
 			<div id="mesa">
 				<div class="tapetes_superiores">
 					<!-- id="inicial" en class tapete id="tapete_inicial"-->
@@ -71,11 +65,41 @@
 			</div>
 		</div>
 
+		<!-- audios  -->
+		<div>
+			<audio id="barajado" src="shuffle-cards.mp3" preload="auto"></audio>
+			<audio id="ponerCarta" src="/flipcard.mp3" preload="auto"></audio>
+		</div>
+
+
+
 	</div> <!-- class="central" -->
+
+
+	<!-- La ventana modal para avisar de que has acabado -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+							aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-center" id="myModalLabel">¡Has ganado!</h4>
+				</div>
+				<div class="modal-body" >
+					<p class="text-center" id="contenido-texto-modal"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Invocamos el javascript principal-->
 	<!--<script src="/js/solitario.js"></script>-->
-	<script src="/js/solitario.js"></script>
-	<!--<script src="/solitario-dwec/js/solitario.js"></script>-->
+	<script src="js/solitario.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -5,9 +5,9 @@
 // Array de palos:
 let palos = ["ova", "cua", "hex", "cir"];
 // Array de número de cartas:
- let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+//let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
-//let numeros = [9, 10, 11, 12];
+let numeros = [ 10, 11, 12];
 
 // Paso (top y left) en pixeles de una carta a la siguiente en un mazo:
 let pasoInicial = 5;
@@ -54,17 +54,18 @@ let temporizador = null; // manejador del temporizador
 /***** FIN DECLARACIÓN DE VARIABLES GLOBALES *****/
 
 
-//BOTON RESET COMENTADO!!!!!!!!!!!
+
 // Rutina asociada a boton reset: comenzar_juego
-document.getElementById("reset").onclick = comenzar_juego;
+document.getElementById("reset").addEventListener("click", reiniciarJuego);
+//document.getElementById("reset").onclick = comenzar_juego;
 
 // El juego arranca ya al cargar la página: no se espera a reiniciar
 /*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
-//window.onload = comenzar_juego;
+// listener para arrancar juego al cargar la pagina
 window.addEventListener("load", comenzar_juego)
 
-document.getElementById("reset").addEventListener("click", reiniciarJuego);
+
 
 
 //window.addEventListener("load", inicio);
@@ -80,8 +81,6 @@ function comenzar_juego() {
 	el "path" correcto en la URL asociada al atributo "src" de <img>). Una vez creado
 	el elemento <img>, inclúyase como elemento del array "mazo_inicial". 
 	*/
-
-	/*** !!!!!!!!!!!!!!!!!!! CÓDIGO !!!!!!!!!!!!!!!!!!!! **/
 
 	//generar la baraja
 	generarBaraja();
@@ -106,6 +105,8 @@ function comenzar_juego() {
 	// Arrancar el conteo de tiempo
 	arrancar_tiempo();
 
+	//reproducimos sonido barajado
+	sonidoBarajado();
 } // comenzar_juego
 
 
@@ -171,7 +172,7 @@ function arrancar_tiempo() {
 
 */
 /**
-	 * Generar baraja, crea elementos img y el src los botiene de un bucle for generando las imagenes 
+	 * Genera la baraja, crea elementos img y el src los botiene de un bucle for generando las imagenes 
 	 */
 function generarBaraja() {
 	//codigo de baraja
@@ -185,9 +186,9 @@ function generarBaraja() {
 			var imgCarta = document.createElement("img");
 			//asingo atributo scr, alt y ancho a la carta 
 			imgCarta.setAttribute("src", "imagenes/baraja/" + numero + "-" + palo + ".png");
+			var idcarta = palo + "-" + numero; //Genero el ID de la carta
 			imgCarta.setAttribute("alt", "Carta de baraja " + idcarta);
 			//le asignamos un ID
-			var idcarta = palo + "-" + numero;
 			imgCarta.setAttribute("id", idcarta)
 			//acemos que sea arrastable
 			//imgCarta.setAttribute("draggable", "true");
@@ -205,6 +206,16 @@ function generarBaraja() {
 		}
 	}
 }
+/**
+ *  Funcion que recibe un mazo de cartas como parametro, lo mezcla aleatoriamente y lo devuelve.
+ *  - Recorramos con i todos los elementos del array
+		- Sea j un indice cuyo valor sea un número aleatorio comprendido 
+			entre 0 y la longitud del array menos uno. Este valor aleatorio
+			puede conseguirse, por ejemplo con la instrucción JavaScript
+				Math.floor( Math.random() * LONGITUD_DEL_ARRAY );
+		- Se intercambia el contenido de la posición i-ésima con el de la j-ésima
+
+ */
 function barajar(mazo) {
 	// Recorremos el array desde el final hasta el principio
 	for (let i = mazo.length - 1; i > 0; i--) {
@@ -214,7 +225,6 @@ function barajar(mazo) {
 		[mazo[i], mazo[j]] = [mazo[j], mazo[i]];
 	}
 	return mazo;
-
 } // barajar
 
 
@@ -232,7 +242,7 @@ function cargar_tapete_inicial(mazo) {
 
 	//variables de inicio de posiciones horizontal y vertical
 	let posicion = 0;
-
+	//variable para saber la posicion de la última carta para darle la opcion de draggable
 	let ultimaCartaMazo = mazo.length - 1;
 	// Iterar sobre cada carta en el array baraja
 	mazo.forEach(carta => {
@@ -242,7 +252,7 @@ function cargar_tapete_inicial(mazo) {
 		carta.style.top = `${posicion}px`;
 		//añadimos el dataset ubitacion
 		carta.dataset.ubicacion = "mazo";
-		carta.style.transform="";
+		carta.style.transform = "";
 		carta.setAttribute("draggable", "false");
 		//acemos que la ultima carta sea arrastable
 		var esArrastable = (mazo[ultimaCartaMazo] == carta) ? true : false;
@@ -252,13 +262,10 @@ function cargar_tapete_inicial(mazo) {
 		// Aumentar la posición para la siguiente carta
 		posicion += pasoInicial; // Ajusta este valor según el desplazamiento horizontal deseado
 
-
 		// Agregar la carta al contenedor en el documento HTML
 		tapete_cartas.appendChild(carta);
 
 	});
-	//seteamos el numero de cartas en el contador tapete_inicial
-	//set_contador(cont_inicial, mazo_inicial.length)
 
 } // cargar_tapete_inicial
 
@@ -302,10 +309,10 @@ function reiniciarJuego() {
 	mazo_receptor4.length = 0;
 	//borrar los elementos HTML del codigo que tengan la clase carta
 	// asi nos aseguramos que no quedan cartas ni en el tapete ni receptores
-    var cartas = document.querySelectorAll('.carta');
-    cartas.forEach(carta => {
-        carta.parentNode.removeChild(carta);
-    });
+	var cartas = document.querySelectorAll('.carta');
+	cartas.forEach(carta => {
+		carta.parentNode.removeChild(carta);
+	});
 	//se comienza el juego
 	comenzar_juego();
 	//se vacian los receptores
@@ -350,7 +357,7 @@ function actualizarPosicionCartasHTML() {
 			var esArrastable = (mazos[i][mazos[i].length - 1] == mazos[i][y]) ? true : false;
 			//le damos una posicion
 			carta.style.left = "50%"; //posicionamos para centrar
-			carta.style.transform="translate(-50%, 0)";
+			carta.style.transform = "translate(-50%, 0)";
 			carta.style.top = `${y * pasoReceptor}px`; //con el bucle for amplio los espacios top
 			carta.dataset.ubicacion = `receptor${i + 1}`
 			//Se gestiona si la carta es arrastable o no
@@ -358,18 +365,16 @@ function actualizarPosicionCartasHTML() {
 			//acemos que sea arrastable si la condicion es true
 			if (esArrastable) {
 				carta.setAttribute("draggable", "true");
-			} else
-				carta.setAttribute("ondragstart", "dragStart(event)")
-			// Agregar la carta al tapete destino en el documento HTML
+			}
 			tapete_destino.appendChild(carta);
 		}
 	}
 	// codigo para poner las cartas del mazo sobrantes //
 	mazo_sobrantes.forEach(carta => {
 		var tapte_sobrantes = document.getElementById("sobrantes");
-		carta.style.left = "50%"; 
-		carta.style.top = '50%'; 
-		carta.style.transform="translate(-50%, -50%)";
+		carta.style.left = "50%";
+		carta.style.top = '50%';
+		carta.style.transform = "translate(-50%, -50%)";
 		carta.dataset.ubicacion = 'sobrantes'
 		// Agregar la carta al tapte_sobrantes en el documento HTML
 		tapte_sobrantes.appendChild(carta);
@@ -402,7 +407,11 @@ function barajarYrepartirSobrantes() {
 		cargar_tapete_inicial(mazo_inicial);
 		// añadir otra vez numero de cartas en juego
 		set_contador(cont_inicial, mazo_inicial.length)
+
+		//reproducimos sonido barajado
+		sonidoBarajado();
 	}
+
 }
 /**
  * Funcion para borrar el div llamado tapete inicial
@@ -522,6 +531,8 @@ function cambioMazo(carta, origen, destino) {
 	inc_contador(cont_movimientos);
 	dec_contador(contadores[origen]);
 
+	//reproducimos sonido de poner carta
+	sonidoCarta();
 	//compruebo si ha finalizado el juego
 	finJuego();
 }//cambioMazo
@@ -530,15 +541,49 @@ function cambioMazo(carta, origen, destino) {
 /**
  * Funcion que comprueba que el juego ha finalizado
  */
-function finJuego(){
+function finJuego() {
 	//comprobamos cartas en las barajas inicial y sobrantes
 	let cartasMazoInicio = mazo_inicial.length == 0 ? true : false;
 	let cartasMazoSobrante = mazo_sobrantes.length == 0 ? true : false;
 	var movimientos = cont_movimientos.textContent
 	//si ambas estan a 0, ejecutamos mensaje ganador
-	if(cartasMazoInicio && cartasMazoSobrante){
+	if (cartasMazoInicio && cartasMazoSobrante) {
 		//paramos el temporizador
 		clearInterval(temporizador);
-		alert("!Has completado el juego!\nHas necesitado un total de "+movimientos+" movimientos")
+
+		//Lanzamos ventana modal de ganar
+		modalGanarJuego(movimientos);
+		//se ha mejorado el aviso de ganar con una ventana modal con bootstrap
+		//si no otra opcion es lanzar un alert, pero la ventana modal es mas elegante
+		//alert("!Has completado el juego!\nHas necesitado un total de " + movimientos + " movimientos")
 	}
+}
+
+
+
+/**
+ * Funcion reprodución sonido barajado
+ */
+function sonidoBarajado() {
+	var audio = document.getElementById("barajado");
+
+	audio.play();
+}
+function sonidoCarta() {
+	var audio = document.getElementById("ponerCarta");
+
+	audio.play();
+}
+
+/**
+ * Funcion que lanza la ventana modal 
+ */
+function modalGanarJuego(movimientos){
+	//se importa el elemento con el id y se genera el mensaje con los movimientos
+	var mensajeGanador = document.getElementById('contenido-texto-modal');
+	mensajeGanador.textContent = "Has necesitado un total de " + movimientos+" movimientos, ¡Enhorabuena! "
+
+	var myModal = $('#myModal');
+	// Abrir la ventana modal
+	myModal.modal('show');
 }
